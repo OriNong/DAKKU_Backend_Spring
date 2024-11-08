@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.BoardMapper">
+
+    <!-- 게시물 목록 -->
+    <select id="selectBoard" parameterType="SearchHelper" resultType="Board">
+        SELECT
+            A.id
+            , A.title
+            , A.content
+            , A.start_date
+            , A.end_date
+            , A.created_at
+        FROM board AS A
+        <where>
+            <if test="searchCode != null and searchCode != ''">
+                AND A.code = #{searchCode}
+            </if>
+            <if test="searchKeyword != null and searchKeyword != '' and searchType != null and searchType != ''">
+                AND A.${searchType} LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 게시물 목록 카운트 -->
+    <select id="countBoard" parameterType="SearchHelper" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        <where>
+            <if test="searchCode != null and searchCode != ''">
+                AND code = #{searchCode}
+            </if>
+            <if test="searchKeyword != null and searchKeyword != '' and searchType != null and searchType != ''">
+                AND ${searchType} LIKE || #{searchKeyword} || '%'
+            </if>
+        </where>
+    </select>
+
+    <!-- 게시물 저장 -->
+    <insert id="boardSave" parameterType="Board" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO board (code, title, content, start_date, end_date, reg_id, created_at, mod_id, updated_at)
+        VALUES (
+                #{code}
+                , #{title}
+                , #{content}
+                , #{startDate}
+                , #{endDate}
+                , #{regId}
+                , SYSDATE
+                , #{modId}
+                , SYSDATE
+               )
+    </insert>
+
+    <!-- 게시물 조회 -->
+    <select id="boardInfo" parameterType="Long" resultType="Board">
+        SELECT
+            id
+             , code
+             , title
+             , content
+             , start_date
+             , end_date
+             , created_at
+            , reg_id
+            , mod_id
+        , updated_at
+        FROM board
+            WHERE id = #{id}
+    </select>
+
+    <!-- 게시물 수정 -->
+    <update id="updateBoard" parameterType="Board">
+        UPDATE board SET
+            title = #{title}
+            , content = #{content}
+            , start_date = #{startDate}
+            , end_date = #{endDate}
+            , mod_id = #{modId}
+            , updated_at = SYSDATE
+        WHERE id = #{id}
+    </update>
+
+    <!-- 게시물 삭제 -->
+    <delete id="deleteBoard" parameterType="Long">
+        DELETE FROM board
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
