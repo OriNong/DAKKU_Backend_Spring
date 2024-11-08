@@ -24,12 +24,12 @@ spring:
       enabled: always
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: ENC(-gL+MfIBpcqeppb9FauYZLazjQUNLQBVs8kdA6rqrpaLLvD4eK2ueaxn5xILCUO/D9jF+fyMJyz8=)
-    username: ENC(FDovxwuzSqKFIByhxGOQoQ==)
-    password: ENC(EFTlYROOJqqEUDRXV22oGg==)
-#    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
-#    username: c##fin
-#    password: c##fin
+    #url: ENC(-gL+MfIBpcqeppb9FauYZLazjQUNLQBVs8kdA6rqrpaLLvD4eK2ueaxn5xILCUO/D9jF+fyMJyz8=)
+    #username: ENC(FDovxwuzSqKFIByhxGOQoQ==)
+    #password: ENC(EFTlYROOJqqEUDRXV22oGg==)
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+    username: c##fin
+    password: c##fin
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
