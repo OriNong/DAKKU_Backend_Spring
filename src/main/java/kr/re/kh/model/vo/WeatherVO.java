@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
-@Service
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeatherVO {
-    private int weaderId;       // 날씨 고유 id
-    // 이모티콘 형식에 맞는 필드 값 추가 (weatherIcon)
+    private int weatherId;       // 날씨 고유 id
+    private String weatherStatus; // 날씨 상태
+    private String weatherIcon; // 이모티콘
 }
