@@ -19,8 +19,8 @@ import kr.re.kh.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,6 +32,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -40,7 +41,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         securedEnabled = true,
         jsr250Enabled = true,
         prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSocketMessageBroker
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebSocketMessageBrokerConfigurer {
 
     private static final String[] DOC_URLS = {
             "/swagger-resources/configuration/ui",
@@ -94,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/",
-                		"/favicon.ico",
+                        "/favicon.ico",
                         "/**/*.json",
                         "/**/*.xml",
                         "/**/*.woff2",
@@ -117,6 +119,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/api/front/**").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/**/api/file/view/**").permitAll()
+                .antMatchers("/**/api/topic/**").permitAll()
+                .antMatchers("/**/api/app/**").permitAll()
+                .antMatchers("/**/api/chat/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -125,5 +130,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/api/chat") // socket 연결 url
+                .setAllowedOriginPatterns("*"); // CORS 허용 범위
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/api/topic"); // 구독 url
+        registry.setApplicationDestinationPrefixes("/api/app"); // prefix 정의
     }
 }

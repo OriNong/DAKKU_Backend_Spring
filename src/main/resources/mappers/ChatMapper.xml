@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.ChatMapper">
+
+    <insert id="createRoom" parameterType="kr.re.kh.model.vo.RoomVO">
+        INSERT INTO CHATROOMTABLE (USER_ID, USER_NAME) VALUES (#{userID}, #{userName})
+    </insert>
+
+    <select id="roomSearch" parameterType="Long" resultType="int">
+        SELECT ROOM_ID FROM CHATROOMTABLE WHERE USER_ID = #{userId}
+    </select>
+
+</mapper>
