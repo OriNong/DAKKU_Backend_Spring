@@ -27,9 +27,9 @@ spring:
     #url: ENC(-gL+MfIBpcqeppb9FauYZLazjQUNLQBVs8kdA6rqrpaLLvD4eK2ueaxn5xILCUO/D9jF+fyMJyz8=)
     #username: ENC(FDovxwuzSqKFIByhxGOQoQ==)
     #password: ENC(EFTlYROOJqqEUDRXV22oGg==)
-    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
-    username: c##fin
-    password: c##fin
+    url: jdbc:log4jdbc:oracle:thin:@han-jun.kro.kr:1521:xe
+    username: khFinalProject
+    password: project
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
@@ -127,3 +127,4 @@ logging:
   pattern:
     console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr([행번호]: %line){red} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%15.15t] %-40.40logger{39} : [행번호] : %line  %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+
