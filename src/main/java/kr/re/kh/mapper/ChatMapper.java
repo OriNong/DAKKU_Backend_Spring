@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ChatMapper {
 
-    int roomSearch(Long userID);
+    String roomSearch(Long userID);
     void createRoom(RoomVO roomVO);
 
 }
