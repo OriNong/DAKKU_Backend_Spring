@@ -5,10 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class FriendshipVO {
-    private int memberId1;              // 사용자 1
-    private int memberId2;              // 사용자 2
-    private String friendshipStatus;    // 친구 상태
+    private int userID;              // 사용자 1
+    private int friend_id;              // 사용자 2
 }

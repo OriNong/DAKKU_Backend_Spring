@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.WeatherMapper">
+    <select id="selectWeatherIconByWeatherId" parameterType="int" resultType="string">
+        SELECT
+        weather_icon
+        FROM JISU.weather_icons
+        WHERE weather_id = #{weatherId}
+
+    </select>
+
+    <select id="getWeatherById" parameterType="int" resultType="WeatherVO">
+        SELECT 1
+    </select>
+
+    <select id="findByWeatherStatus" parameterType="string" resultType="WeatherVO">
+        SELECT 1
+    </select>
+</mapper>
