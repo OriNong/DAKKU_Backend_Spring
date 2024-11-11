@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.DiaryMapper">
+
+    <!-- 로그인 사용자 자신의 일기 조회 -->
+    <select id="selectAllDiaryByMemberId" parameterType="Long" resultType="DiaryVO">
+        SELECT
+            *
+        FROM diarys
+        WHERE memberId = #{memberId}
+    </select>
+
+    <!-- 개별 사용자의 공개로 게시된 일기 조회 -->
+    <select id="selectPublicDiaryByMemberId" parameterType="Long" resultType="DiaryVO">
+        SELECT
+            *
+        FROM diarys
+        WHERE memberId = #{memberId}
+            AND isPublic = true
+    </select>
+
+    <!-- 공개로 게시된 일기 조회 -->
+    <select id="selectAllPublicDiary" resultType="DiaryVO">
+        SELECT
+            *
+        FROM diarys
+        WHERE isPublic = true
+    </select>
+    
+    <!-- 일기 저장 -->
+    <insert id="saveDiary" parameterType="DiaryVO" useGeneratedKeys="true" keyProperty="diaryId">
+        INSERT INTO diarys (
+            memberId,
+            diaryTitle,
+            diaryContent,
+            isPublic,
+            weatherId,
+            diaryViews,
+            diaryLikes
+        )
+        VALUES (
+                   #{memberId},
+                   #{diaryTitle},
+                   #{diaryContent},
+                   #{isPublic},
+                   #{weatherId},
+                   #{diaryViews},
+                   #{diaryLikes}
+               )
+    </insert>
+    
+    <!-- 일기 수정 시 해당 일기 조회 후 반환 -->
+    <select id="selectDiaryWhenUptDiary" parameterType="Long" resultType="DiaryVO">
+        SELECT
+            diaryId,
+            memberId,
+            diaryTitle,
+            diaryContent,
+            diaryCrtDate,
+            diaryUpdDate,
+            isPublic,
+            weatherId,
+            diaryViews,
+            diaryLikes
+        FROM diarys
+        WHERE diaryId = #{diaryId}
+    </select>
+
+    <!--일기 수정 -->
+    <update id="updateDiary" parameterType="DiaryVO">
+        UPDATE diarys
+        SET
+            diaryTitle = #{diaryTitle},
+            diaryContent = #{diaryContent},
+            isPublic = #{isPublic},
+            weatherId = #{weatherId},
+            diaryViews = #{diaryViews},
+            diaryLikes = #{diaryLikes}
+        WHERE diaryId = #{diaryId}
+        AND memberId = #{memberId}
+    </update>
+
+    <!-- 일기 삭제 -->
+    <delete id="deleteDiaryById" parameterType="Long">
+        DELETE FROM diarys
+        WHERE diaryId = #{diaryId}
+    </delete>
+</mapper>
