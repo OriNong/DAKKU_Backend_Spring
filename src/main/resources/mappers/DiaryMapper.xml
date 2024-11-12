@@ -5,7 +5,16 @@
     <!-- 로그인 사용자 자신의 일기 조회 -->
     <select id="selectAllDiaryByMemberId" parameterType="Long" resultType="DiaryVO">
         SELECT
-            *
+            diaryId,
+            memberId,
+            diaryTitle,
+            diaryContent,
+            isPublic,
+            diaryViews,
+            diaryLikes,
+            weather_icon,
+            diaryCrtDate,
+            diaryUpdDate
         FROM diarys
         WHERE memberId = #{memberId}
     </select>
@@ -13,7 +22,16 @@
     <!-- 개별 사용자의 공개로 게시된 일기 조회 -->
     <select id="selectPublicDiaryByMemberId" parameterType="Long" resultType="DiaryVO">
         SELECT
-            *
+            diaryId,
+            memberId,
+            diaryTitle,
+            diaryContent,
+            isPublic,
+            diaryViews,
+            diaryLikes,
+            weather_icon,
+            diaryCrtDate,
+            diaryUpdDate
         FROM diarys
         WHERE memberId = #{memberId}
             AND isPublic = true
@@ -23,7 +41,16 @@
     <!-- 좋아요 기준 오름차순, 같은 좋아요 수는 조회수 우선 표시 -->
     <select id="selectAllPublicDiary" resultType="DiaryVO">
         SELECT
-            *
+            diaryId,
+            memberId,
+            diaryTitle,
+            diaryContent,
+            isPublic,
+            diaryViews,
+            diaryLikes,
+            weather_icon,
+            diaryCrtDate,
+            diaryUpdDate
         FROM diarys
         WHERE isPublic = true
         ORDER BY diaryLikes DESC, diaryViews DESC
@@ -36,9 +63,6 @@
             diaryTitle,
             diaryContent,
             isPublic,
-            weatherId,
-            diaryViews,
-            diaryLikes,
             weatherIcon
         )
         VALUES (
@@ -46,9 +70,6 @@
                    #{diaryTitle},
                    #{diaryContent},
                    #{isPublic},
-                   #{weatherId},
-                   #{diaryViews},
-                   #{diaryLikes},
                    #{weatherIcon}
                )
     </insert>
@@ -60,12 +81,12 @@
             memberId,
             diaryTitle,
             diaryContent,
-            diaryCrtDate,
-            diaryUpdDate,
             isPublic,
-            weatherId,
             diaryViews,
-            diaryLikes
+            diaryLikes,
+            weather_icon,
+            diaryCrtDate,
+            diaryUpdDate
         FROM diarys
         WHERE diaryId = #{diaryId}
     </select>
@@ -76,10 +97,7 @@
         SET
             diaryTitle = #{diaryTitle},
             diaryContent = #{diaryContent},
-            isPublic = #{isPublic},
-            weatherId = #{weatherId},
-            diaryViews = #{diaryViews},
-            diaryLikes = #{diaryLikes}
+            isPublic = #{isPublic}
         WHERE diaryId = #{diaryId}
         AND memberId = #{memberId}
     </update>
