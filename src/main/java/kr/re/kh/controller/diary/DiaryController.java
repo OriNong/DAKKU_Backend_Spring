@@ -79,7 +79,7 @@ public class DiaryController {
      * @param diary : 수정된 일기 내용
      * @return : 수정 완료
      */
-    @PutMapping("/update")
+    @PutMapping("/update/{diaryId}")
     public ResponseEntity<?> updateDiary(@PathVariable Long diaryId, @RequestBody DiaryVO diary) {
         if (diaryService.selectDiaryByDiaryId(diaryId) == null) {
             return ResponseEntity.notFound().build();
