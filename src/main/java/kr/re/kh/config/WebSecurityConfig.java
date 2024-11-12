@@ -122,7 +122,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers("/**/topic/**").permitAll()
                 .antMatchers("/**/app/**").permitAll()
                 .antMatchers("/**/chat/**").permitAll()
-                .antMatchers("/**/api/chat/uuid").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

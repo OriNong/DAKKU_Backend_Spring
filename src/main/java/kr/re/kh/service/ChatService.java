@@ -71,6 +71,9 @@ public class ChatService {
         requestMap.put("userID", myId);
         requestMap.put("friendID", friendID);
         String resultUUID = chatMapper.checkUUID(requestMap);
+        result.put("uuid", resultUUID);
+        result.put("userID", myId);
+        result.put("friendID", friendID);
         log.info(resultUUID);
 
         return result;

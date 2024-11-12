@@ -51,6 +51,7 @@ public class ChatController {
             @RequestParam("friendID") Long friendID
     ) {
         Long myId = currentUser.getId();
+        log.info(myId.toString());
 
         return ResponseEntity.ok(chatService.checkRoom(myId, friendID));
     }
