@@ -38,7 +38,8 @@
             isPublic,
             weatherId,
             diaryViews,
-            diaryLikes
+            diaryLikes,
+            weatherIcon
         )
         VALUES (
                    #{memberId},
@@ -47,7 +48,8 @@
                    #{isPublic},
                    #{weatherId},
                    #{diaryViews},
-                   #{diaryLikes}
+                   #{diaryLikes},
+                   #{weatherIcon}
                )
     </insert>
     

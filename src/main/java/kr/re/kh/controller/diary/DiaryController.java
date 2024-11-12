@@ -68,7 +68,10 @@ public class DiaryController {
      * @return : 저장 완료
      */
     @PostMapping("/save")
-    public ResponseEntity<?> saveDiary(@RequestBody DiaryVO diary) {
+    public ResponseEntity<?> saveDiary(@RequestBody DiaryVO diary, @RequestParam("weatherIcon") String weatherIcon) {
+        // 날씨 이모티콘을 DiaryVO에 설정
+        diary.setWeatherIcon(weatherIcon);
+
         diaryService.saveDiary(diary);
         return ResponseEntity.ok(new ApiResponse(true, "저장되었습니다."));
     }

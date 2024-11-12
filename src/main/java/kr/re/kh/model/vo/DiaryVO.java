@@ -20,4 +20,5 @@ public class DiaryVO {
     private int weatherId;                  // 날씨 고유 id
     private Long diaryViews;                // 일기 조회 수
     private Long diaryLikes;                // 일기 좋아요 수
+    private String weatherIcon;             // 날씨 이모티콘
 }
