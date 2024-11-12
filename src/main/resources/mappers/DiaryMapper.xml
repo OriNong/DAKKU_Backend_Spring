@@ -20,11 +20,13 @@
     </select>
 
     <!-- 공개로 게시된 일기 조회 -->
+    <!-- 좋아요 기준 오름차순, 같은 좋아요 수는 조회수 우선 표시 -->
     <select id="selectAllPublicDiary" resultType="DiaryVO">
         SELECT
             *
         FROM diarys
         WHERE isPublic = true
+        ORDER BY diaryLikes DESC, diaryViews DESC
     </select>
     
     <!-- 일기 저장 -->
