@@ -6,7 +6,9 @@ import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.LogOutRequest;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.payload.response.UserResponse;
+import kr.re.kh.service.MemberService;
 import kr.re.kh.service.UserService;
+import kr.re.kh.service.impl.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/user")
@@ -26,6 +29,7 @@ public class UserController {
 
     private final UserService userService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final MemberServiceImpl memberService;
 
     /**
      * 현재 사용자의 프로필 리턴
@@ -57,6 +61,29 @@ public class UserController {
         OnUserLogoutSuccessEvent logoutSuccessEvent = new OnUserLogoutSuccessEvent(customUserDetails.getEmail(), credentials.toString(), logOutRequest);
         applicationEventPublisher.publishEvent(logoutSuccessEvent);
         return ResponseEntity.ok(new ApiResponse(true, "로그아웃 되었습니다."));
+    }
+
+    /**
+     * 비밀번호 찾기에서 임시비밀번호 발급하기
+     * @param requestMap
+     * @return
+     */
+    @PostMapping("/changePW")
+    @ResponseBody
+    public ResponseEntity<?> changePW(@RequestBody HashMap<String, String> requestMap) {
+        // 요청받은 HashMap에서 이메일과 사용자 아이디 추출
+        String email = requestMap.get("email");
+        String username = requestMap.get("username");
+
+        HashMap<String, String> requestData = new HashMap<>();
+        requestData.put("email", email);
+        requestData.put("username", username);
+
+        // 비밀번호 찾기 및 임시 비밀번호 발급 로직
+        HashMap<String, Object> response = (HashMap<String, Object>) memberService.changePW(requestData);
+
+        // 결과를 응답으로 반환
+        return ResponseEntity.ok(response);
     }
 
 }

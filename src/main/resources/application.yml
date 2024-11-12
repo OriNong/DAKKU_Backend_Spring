@@ -28,8 +28,8 @@ spring:
     #username: ENC(FDovxwuzSqKFIByhxGOQoQ==)
     #password: ENC(EFTlYROOJqqEUDRXV22oGg==)
     url: jdbc:log4jdbc:oracle:thin:@han-jun.kro.kr:1521:xe
-    username: minseo
-    password: minseo
+    username: khFinalProject
+    password: project
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
