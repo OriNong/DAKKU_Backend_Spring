@@ -3,7 +3,6 @@ package kr.re.kh.controller.diary;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.DiaryVO;
 import kr.re.kh.service.DiaryService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class DiaryController {
      */
     @GetMapping("/members/{memberId}")
     public ResponseEntity<List<DiaryVO>> showMemberDiary(@PathVariable("memberId") Long memberId) {
-        List<DiaryVO> memberPublicDiaries = diaryService.selectPublicDiaryByMemberId(memberId);
+        List<DiaryVO> memberPublicDiaries = diaryService.selectAllPublicDiaryByMemberId(memberId);
         return ResponseEntity.ok(memberPublicDiaries);
     }
 
@@ -52,9 +51,43 @@ public class DiaryController {
         return ResponseEntity.ok(publicDiaries);
     }
 
+    /**
+     * 일기 선택 시 해당 일기 조회
+     * @param diaryId : 일기 고유 id
+     * @return : 선택된 일기
+     */
+    @GetMapping("/{diaryId}}")
+    public ResponseEntity<DiaryVO> showSelectedDiary(@PathVariable Long diaryId) {
+        DiaryVO diary = diaryService.selectDiaryByDiaryId(diaryId);
+        return ResponseEntity.ok(diary);
+    }
+
+    /**
+     * 일기 저장
+     * @param diary : 클라이언트에서 diaryVO와 필드명이 일치하는 Json 데이터 수신
+     * @return : 저장 완료
+     */
     @PostMapping("/save")
     public ResponseEntity<?> saveDiary(@RequestBody DiaryVO diary) {
         diaryService.saveDiary(diary);
         return ResponseEntity.ok(new ApiResponse(true, "저장되었습니다."));
     }
+
+    /**
+     * 일기 수정
+     * @param diaryId : 일기 고유 id
+     * @param diary : 수정된 일기 내용
+     * @return : 수정 완료
+     */
+    @PutMapping("/update")
+    public ResponseEntity<?> updateDiary(@PathVariable Long diaryId, @RequestBody DiaryVO diary) {
+        if (diaryService.selectDiaryByDiaryId(diaryId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        diary.setDiaryId(diaryId);
+        diaryService.updateDiary(diary);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

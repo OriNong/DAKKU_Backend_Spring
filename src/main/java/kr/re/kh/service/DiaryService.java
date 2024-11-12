@@ -21,7 +21,7 @@ public class DiaryService {
     }
 
     // 개별 사용자의 공개로 게시된 일기 조회
-    public List<DiaryVO> selectPublicDiaryByMemberId(Long memberId) {
+    public List<DiaryVO> selectAllPublicDiaryByMemberId(Long memberId) {
         return diaryMapper.selectPublicDiaryByMemberId(memberId);
     }
 
@@ -31,11 +31,10 @@ public class DiaryService {
     }
     // 일기 저장
     public void saveDiary(DiaryVO diary) {
-
         diaryMapper.saveDiary(diary);
     }
-    // 일기 수정 시 해당 일기 조회 후 반환
-    public DiaryVO selectDiaryWhenUptDiary(Long diaryId) {
+    // 일기 고유 id로 일기 조회
+    public DiaryVO selectDiaryByDiaryId(Long diaryId) {
         return diaryMapper.selectDiaryWhenUptDiary(diaryId);
     }
     // 일기 수정
