@@ -124,6 +124,7 @@ public class UserService {
         newUser.setActive(false);
         newUser.setEmailVerified(true);
         newUser.setName(registerRequest.getName());
+        newUser.addRoles(getRolesForNewUser(false));
         return newUser;
     }
 

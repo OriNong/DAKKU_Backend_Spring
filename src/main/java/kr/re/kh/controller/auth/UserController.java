@@ -35,8 +35,8 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser) {
-        log.info(currentUser.getEmail() + " has role: " + currentUser.getRoles() + " username: " + currentUser.getUsername());
-        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
+        log.info(currentUser.getEmail() + " has role: " + currentUser.getRoles() + " username: " + currentUser.getUsername() + "id: " + currentUser.getId());
+        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles(), currentUser.getId());
         return ResponseEntity.ok(userResponse);
     }
 
