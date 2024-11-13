@@ -39,9 +39,10 @@ public class ChatController {
                 .content(chatMessageRequest.getText())
                 .userId(chatMessageRequest.getUserID())
                 .friendId(chatMessageRequest.getFriendID())
+                .roomID(chatMessageRequest.getRoomId())
                 .build();
 
-        return ResponseEntity.ok(chatService.chat(chatMessageCreateCommand));
+        return ResponseEntity.ok(chatService.saveMsg(chatMessageCreateCommand));
     }
 
     @GetMapping("/api/chat/uuid")
@@ -50,10 +51,7 @@ public class ChatController {
             @CurrentUser CustomUserDetails currentUser,
             @RequestParam("friendID") Long friendID
     ) {
-        Long myId = currentUser.getId();
-        log.info(myId.toString());
-
-        return ResponseEntity.ok(chatService.checkRoom(myId, friendID));
+        return ResponseEntity.ok(chatService.checkRoom(currentUser, friendID));
     }
 
 }
