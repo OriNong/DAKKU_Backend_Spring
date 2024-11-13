@@ -28,6 +28,7 @@ import kr.re.kh.model.payload.response.UserListResponse;
 import kr.re.kh.model.payload.response.UserResponse;
 import kr.re.kh.repository.UserRepository;
 import kr.re.kh.util.ModelMapper;
+import kr.re.kh.util.Util;
 import kr.re.kh.util.ValidatePageNumberAndSize;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -328,4 +329,43 @@ public class UserService {
             throw new BadRequestException("잘못된 요청입니다.");
         }
     }
-}
+    /**
+     * 비밀번호찾기(임시비번발급)
+     * @param
+     * @return
+     */
+    public Map<String, Object> changePW(String username, String email) {
+        Map<String, Object> responseMap = new HashMap<>();
+
+        // 사용자 정보 조회
+        Optional<User> optionalUser = userRepository.findByUsernameAndEmail(username, email);
+
+        if (optionalUser.isPresent()) {
+            // 랜덤 비밀번호 생성 (6자리)
+            String randomPw = Util.randomString(6);
+
+            // 비밀번호 암호화
+            String encryptedPassword = passwordEncoder.encode(randomPw);
+
+            // 비밀번호 변경 로직
+            User user = optionalUser.get();
+            user.setPassword(encryptedPassword);
+            userRepository.save(user);
+
+            // 성공 메시지와 임시 비밀번호를 responseMap에 담기
+            responseMap.put("result", true);
+            responseMap.put("message", "임시 비밀번호는 " + randomPw + "입니다. 반드시 복사해주세요.");
+        } else {
+            // 계정이 없으면 오류 메시지 반환
+            responseMap.put("result", false);
+            responseMap.put("message", "계정이 없습니다.");
+        }
+
+        return responseMap;
+    }
+
+    }
+
+
+
+

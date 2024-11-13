@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -70,19 +71,15 @@ public class UserController {
      */
     @PostMapping("/changePW")
     @ResponseBody
-    public ResponseEntity<?> changePW(@RequestBody HashMap<String, String> requestMap) {
+    public ResponseEntity<Map<String, Object>> changePW(@RequestBody HashMap<String, String> requestMap) {
         // 요청받은 HashMap에서 이메일과 사용자 아이디 추출
         String email = requestMap.get("email");
         String username = requestMap.get("username");
 
-        HashMap<String, String> requestData = new HashMap<>();
-        requestData.put("email", email);
-        requestData.put("username", username);
-
         // 비밀번호 찾기 및 임시 비밀번호 발급 로직
-        HashMap<String, Object> response = (HashMap<String, Object>) memberService.changePW(requestData);
+        Map<String, Object> response = userService.changePW(username, email); // userService로 결과 받기
 
-        // 결과를 응답으로 반환
+        // 결과를 ResponseEntity로 반환
         return ResponseEntity.ok(response);
     }
 
