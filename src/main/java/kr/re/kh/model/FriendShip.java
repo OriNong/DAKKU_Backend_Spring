@@ -22,18 +22,17 @@ public class FriendShip {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    private String userEmail; // user의 어떤 값을 기준으로 서로를 판별할 건지 결정 보류
-    private String friendEmail;
+    private Long friendId; // 요청이 오거나 내가 요청을 전송한 상대
     private FriendshipStatus status;
     private boolean isFrom;
 
-    private Long requestUserId;
+    private Long requestedId; // 상대 요청 id
 
     public void acceptFriendshipRequest() {
         status = FriendshipStatus.ACCEPT;
     }
 
-    public void setRequestUserId(Long id) {
-        requestUserId = id;
+    public void setRequestedId(Long id) {
+        requestedId = id;
     }
 }

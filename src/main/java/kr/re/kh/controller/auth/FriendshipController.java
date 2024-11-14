@@ -1,5 +1,8 @@
 package kr.re.kh.controller.auth;
 
+import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.exception.BadRequestException;
+import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.service.FriendshipService;
 import kr.re.kh.service.UserService;
@@ -16,12 +19,19 @@ public class FriendshipController {
     private FriendshipService friendshipService;
     private UserService userService;
 
-    @PostMapping("/user/friends/{id}")
-    public ResponseEntity<?> sendFriendshipRequest(@PathVariable("id") long friendId) {
-        if (!userService.existsById(friendId)) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/user/friendRequest/{id}")
+    public ResponseEntity<?> sendFriendshipRequest(
+            @CurrentUser CustomUserDetails currentUser,
+            @PathVariable("id") Long receiverId) {
+
+        // 친구 요청을 보낸 상대가 존재하지 않는 경우의 처리
+        if (!userService.existsById(receiverId)) {
+            throw new BadRequestException("존재하지 않는 사용자 입니다.");
         }
-        friendshipService.createFriendship(friendId);
-        return ResponseEntity.ok(new ApiResponse(true, "친구 요청 완료"));
+
+        // 친구 요청을 보낸 현재 로그인 사용자 id
+        Long requesterId = currentUser.getId();
+
+        return ResponseEntity.ok(friendshipService.createFriendship(requesterId, receiverId));
     }
 }
