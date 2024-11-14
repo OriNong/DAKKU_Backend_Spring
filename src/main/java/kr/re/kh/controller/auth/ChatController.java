@@ -41,8 +41,18 @@ public class ChatController {
                 .friendId(chatMessageRequest.getFriendID())
                 .roomID(chatMessageRequest.getRoomId())
                 .build();
+        chatService.saveMsg(chatMessageCreateCommand);
 
-        return ResponseEntity.ok(chatService.saveMsg(chatMessageCreateCommand));
+        // 사용자가 사용자의 채팅방을 만들때 생성이 안되는 로직을 넣어야됨.
+
+        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
+                .text(chatMessageRequest.getText())
+                .userID(chatMessageRequest.getUserID())
+                .roomId(chatMessageRequest.getRoomId())
+                .friendID(chatMessageRequest.getFriendID())
+                .build();
+
+        return ResponseEntity.ok(chatMessage);
     }
 
     @GetMapping("/api/chat/uuid")

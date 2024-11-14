@@ -12,12 +12,9 @@ import java.util.Optional;
 @Mapper
 public interface ChatMapper {
 
-    Optional<String> roomSearch(RoomVO roomVO);
     void createRoom(RoomVO roomVO);
-
-    List<MessageVO> messageSearch(String roomID);
     void saveMsg(MessageVO messageVO);
-
+    List<MessageVO> messageSearch(String roomID);
     String checkUUID(HashMap<String, Object> map);
 
 }

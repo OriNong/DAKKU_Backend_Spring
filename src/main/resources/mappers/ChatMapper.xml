@@ -6,13 +6,6 @@
         INSERT INTO CHATROOMTABLE (ROOM_ID, USER_ID, FRIEND_ID) VALUES (#{roomId}, #{userID}, #{friendID})
     </insert>
 
-    <select id="roomSearch" parameterType="RoomVO" resultType="String">
-        SELECT ROOM_ID
-        FROM CHATROOMTABLE
-        WHERE LEAST(user_id, friend_id) = LEAST(#{user_id}, #{friend_id})
-        AND GREATEST(user_id, friend_id) = GREATEST(#{user_id}, #{friend_id})
-    </select>
-
     <insert id="saveMsg" parameterType="MessageVO">
         INSERT INTO CHATMESSAGETABLE (ROOM_ID, USER_ID, FRIEND_ID, MESSAGE) VALUES (#{roomID}, #{userID}, #{friendID}, #{message})
     </insert>

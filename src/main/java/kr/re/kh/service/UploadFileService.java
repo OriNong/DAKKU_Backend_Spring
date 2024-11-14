@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,7 @@ public class UploadFileService {
 
     /**
      * 파일 읽기
+     *
      * @param fileName
      * @return
      * @throws Exception
@@ -73,47 +75,56 @@ public class UploadFileService {
 
     /**
      * 파일 저장
-     * @param file
+     * @param files
+     * @param fileTarget
+     * @param username
      * @return
      * @throws Exception
      */
-    public UploadFile store(MultipartFile file, String fileTarget, String username) throws Exception {
-        if (file.isEmpty()) throw new BadRequestException("저장할 파일이 없습니다.");
+    public List<UploadFile> store(List<MultipartFile> files, String fileTarget, String username) throws Exception {
+        if (files.isEmpty()) throw new BadRequestException("저장할 파일이 없습니다.");
 
-        String saveFileName = UploadFileUtil.fileSave(rootLocation.toString(), file);
-        log.info("saveFileName -{}", saveFileName);
+        List<UploadFile> uploadFileList = new ArrayList<>();
+        for (MultipartFile file : files) {
 
-        String[] saveFileNameArray = saveFileName.split("/");
-        StringBuilder fileDirString = new StringBuilder();
+            String saveFileName = UploadFileUtil.fileSave(rootLocation.toString(), file);
+            log.info("saveFileName -{}", saveFileName);
 
-        for (int i = 0; i < saveFileNameArray.length; i++) {
-            if (i < saveFileNameArray.length - 1) {
-                fileDirString.append(saveFileNameArray[i]).append("/");
+            String[] saveFileNameArray = saveFileName.split("/");
+            StringBuilder fileDirString = new StringBuilder();
+
+            for (int i = 0; i < saveFileNameArray.length; i++) {
+                if (i < saveFileNameArray.length - 1) {
+                    fileDirString.append(saveFileNameArray[i]).append("/");
+                }
             }
+
+            if (saveFileName.toCharArray()[0] == '/') saveFileName = saveFileName.substring(1);
+
+            Resource resource = loadAsResource(saveFileName);
+
+            UploadFile saveFile = UploadFile.builder()
+                    .fileName(file.getOriginalFilename())
+                    .filePath(rootLocation.toString().replace(File.separatorChar, '/') + File.separator + saveFileName)
+                    .contentType(file.getContentType())
+                    .saveFileName(saveFileNameArray[saveFileNameArray.length - 1])
+                    .fileDir(fileDirString.toString())
+                    .fileSize(resource.contentLength())
+                    .fileTarget(fileTarget)
+                    .username(username)
+                    .build();
+            log.info(saveFile.toString());
+            uploadFileMapper.insertFile(saveFile);
+
+            uploadFileList.add(saveFile);
         }
 
-        if (saveFileName.toCharArray()[0] == '/') saveFileName = saveFileName.substring(1);
-
-        Resource resource = loadAsResource(saveFileName);
-
-        UploadFile saveFile = UploadFile.builder()
-                .fileName(file.getOriginalFilename())
-                .filePath(rootLocation.toString().replace(File.separatorChar, '/') + File.separator + saveFileName)
-                .contentType(file.getContentType())
-                .saveFileName(saveFileNameArray[saveFileNameArray.length - 1])
-                .fileDir(fileDirString.toString())
-                .fileSize(resource.contentLength())
-                .fileTarget(fileTarget)
-                .username(username)
-                .build();
-        log.info(saveFile.toString());
-        uploadFileMapper.insertFile(saveFile);
-
-        return saveFile;
+        return uploadFileList;
     }
 
     /**
      * 파일 삭제
+     *
      * @param fileDeleteRequest
      * @return
      */

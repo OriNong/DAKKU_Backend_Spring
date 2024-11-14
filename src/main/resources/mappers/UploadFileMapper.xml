@@ -13,7 +13,7 @@
             file_path,
             file_dir,
             content_type,
-            size,
+            file_size,
             save_file_name
         FROM upload_file
         WHERE id = #{id}
@@ -27,7 +27,7 @@
             file_path,
             file_dir,
             content_type,
-            size,
+            file_size,
             save_file_name
         FROM upload_file
         WHERE id = #{id}
@@ -42,7 +42,7 @@
             file_path,
             file_dir,
             content_type,
-            size,
+            file_size,
             save_file_name
         FROM upload_file
         WHERE save_file_name = #{saveFileName}
@@ -57,7 +57,7 @@
             u.file_path,
             u.file_dir,
             u.content_type,
-            u.size,
+            u.file_size,
             u.save_file_name,
             u.created_at
         FROM file_map f
@@ -75,7 +75,7 @@
             file_dir,
             content_type,
             save_file_name,
-            size,
+            file_size,
             created_at
         ) VALUES (
              #{fileTarget},
@@ -84,7 +84,7 @@
              #{fileDir},
              #{contentType},
              #{saveFileName},
-             #{size},
+             #{fileSize},
              SYSDATE
          )
     </insert>

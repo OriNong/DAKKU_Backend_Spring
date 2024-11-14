@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/file")
@@ -30,16 +32,20 @@ public class FileController {
 
     /**
      * 파일 저장
-     * @param attachFileRequest
+     * @param files
+     * @param fileTarget
+     * @param currentUser
      * @return
      * @throws Exception
      */
     @PostMapping("/save")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     public ResponseEntity<?> saveData(
-            @ModelAttribute AttachFileRequest attachFileRequest, @CurrentUser CustomUserDetails currentUser
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("fileTarget") String fileTarget,
+            @CurrentUser CustomUserDetails currentUser
     ) throws Exception {
-        return ResponseEntity.ok(uploadFileService.store(attachFileRequest.getFile(), attachFileRequest.getFileTarget(), currentUser.getUsername()));
+        return ResponseEntity.ok(uploadFileService.store(files, fileTarget, currentUser.getUsername()));
     }
 
     /**
