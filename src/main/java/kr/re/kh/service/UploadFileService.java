@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -28,6 +29,9 @@ public class UploadFileService {
     private final UploadFileMapper uploadFileMapper;
 
     private final FileMapMapper fileMapMapper;
+
+    @Value("${file.upload-dir}")  // application.yml에서 경로 설정
+    private String uploadDir;
 
     public UploadFileService(String uploadPath, UploadFileMapper uploadFileMapper, FileMapMapper fileMapMapper) {
         this.rootLocation = Paths.get(uploadPath);

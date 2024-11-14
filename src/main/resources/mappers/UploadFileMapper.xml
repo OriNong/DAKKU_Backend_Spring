@@ -106,4 +106,50 @@
 
     </delete>
 
+    <!-- 프로필 이미지 조회 (사용자 ID로 프로필 이미지를 찾기) -->
+    <select id="selectProfileImageByUserId" parameterType="Long" resultType="UploadFile">
+        SELECT
+        id,
+        file_name,
+        file_path,
+        file_dir,
+        content_type,
+        file_size,
+        save_file_name
+        FROM upload_file
+        WHERE file_target = 'profile'
+        AND username = #{userId}
+    </select>
+
+    <!-- 프로필 이미지 저장 -->
+    <insert id="insertProfileImage" parameterType="UploadFile" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO upload_file (
+        file_target,
+        file_name,
+        file_path,
+        file_dir,
+        content_type,
+        save_file_name,
+        file_size,
+        username,
+        created_at
+        ) VALUES (
+        'profile',  <!-- profile 이미지로 구분 -->
+        #{fileName},
+        #{filePath},
+        #{fileDir},
+        #{contentType},
+        #{saveFileName},
+        #{fileSize},
+        #{username},
+        SYSDATE
+        )
+    </insert>
+
+    <!-- 프로필 이미지 삭제 -->
+    <delete id="deleteProfileImage" parameterType="Long">
+        DELETE FROM upload_file WHERE id = #{fileId} AND file_target = 'profile';
+        DELETE FROM file_map WHERE file_id = #{fileId};
+    </delete>
+
 </mapper>

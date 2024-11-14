@@ -192,4 +192,16 @@ public class UploadFileUtil {
         return thumbnailName.substring(uploadPath.length()).replace(File.separatorChar, '/');
     }
 
+    /**
+     * 파일 삭제
+     * @param filePath
+     * @return
+     */
+    public static boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists() && file.delete()) {
+            return true;
+        }
+        return false;
+    }
 }
