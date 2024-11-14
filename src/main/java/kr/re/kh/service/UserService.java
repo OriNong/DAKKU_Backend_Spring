@@ -40,6 +40,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -125,11 +126,41 @@ public class UserService {
      * @return
      */
     public User createUser(RegistrationRequest registerRequest) {
+        String email = registerRequest.getEmail();
+        String username = registerRequest.getUsername();
+        String password = registerRequest.getPassword();
+        String name = registerRequest.getName();
+
+        // 1. 이메일 유효성 검사
+        String emailRegex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$";
+        if (!Pattern.matches(emailRegex, email)){
+            throw new IllegalArgumentException("유효하지 않은 이메일 주소입니다.");
+        }
+
+        // 2. 아이디 유효성 검사
+        String usernameRegex = "^[a-z]+[a-z0-9]{5,19}$";
+        if (!Pattern.matches(usernameRegex, username)){
+            throw new IllegalArgumentException("아이디는 소문자와 숫자로 이루어진 6~20자의 유효한 아이디여야 합니다.");
+        }
+
+        // 3. 비밀번호 유효성 검사
+        String passwordRegex = "^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$";
+        if (!Pattern.matches(passwordRegex, password)){
+            throw new IllegalArgumentException("비밀번호는 영문, 숫자 포함 8자 이상 25자 이하이어야 합니다.");
+        }
+
+        // 4. 이름 유효성 검사
+        String nameRegex = "^^([a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]).{1,10}$";
+        if (!Pattern.matches(nameRegex, name)){
+            throw new IllegalArgumentException("이름은 영문, 한글을 포함한 2자에서 10자 길이로 작성해야 합니다.");
+        }
+        // 아이디는 중복시 무결성 원칙으로 오류, 이메일은 중복시 필드값 사용 중 오류
+
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setUsername(registerRequest.getUsername());
-        newUser.setActive(false);
+        newUser.setActive(true);
         newUser.setEmailVerified(true);
         newUser.setName(registerRequest.getName());
         newUser.addRoles(getRolesForNewUser(false));

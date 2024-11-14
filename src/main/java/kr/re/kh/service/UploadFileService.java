@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,13 +74,15 @@ public class UploadFileService {
 
     /**
      * 파일 저장
-     * @param file
+     * @param
      * @return
      * @throws Exception
      */
-    public UploadFile store(MultipartFile file, String fileTarget, String username) throws Exception {
-        if (file.isEmpty()) throw new BadRequestException("저장할 파일이 없습니다.");
+    public List<UploadFile> store(List<MultipartFile> files, String fileTarget, String username) throws Exception {
+        if (files.isEmpty()) throw new BadRequestException("저장할 파일이 없습니다.");
 
+        List<UploadFile> uploadFileList = new ArrayList<>();
+        for(MultipartFile file : files){
         String saveFileName = UploadFileUtil.fileSave(rootLocation.toString(), file);
         log.info("saveFileName -{}", saveFileName);
 
@@ -109,7 +112,10 @@ public class UploadFileService {
         log.info(saveFile.toString());
         uploadFileMapper.insertFile(saveFile);
 
-        return saveFile;
+        uploadFileList.add(saveFile);
+        }
+
+        return uploadFileList;
     }
 
     /**
