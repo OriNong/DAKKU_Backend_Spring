@@ -17,6 +17,7 @@ import kr.re.kh.model.payload.DeviceInfo;
 import kr.re.kh.validation.annotation.NullOrNotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
 
     @NullOrNotBlank(message = "아이디는 필수 항목입니다.")

@@ -6,9 +6,7 @@ import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.LogOutRequest;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.payload.response.UserResponse;
-import kr.re.kh.service.MemberService;
 import kr.re.kh.service.UserService;
-import kr.re.kh.service.impl.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,7 +26,6 @@ public class UserController {
 
     private final UserService userService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final MemberServiceImpl memberService;
 
     /**
      * 현재 사용자의 프로필 리턴
@@ -41,7 +36,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser) {
         log.info(currentUser.getEmail() + " has role: " + currentUser.getRoles() + " username: " + currentUser.getUsername());
-        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles(), currentUser.getId());
+        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
         return ResponseEntity.ok(userResponse);
     }
 
@@ -62,25 +57,6 @@ public class UserController {
         OnUserLogoutSuccessEvent logoutSuccessEvent = new OnUserLogoutSuccessEvent(customUserDetails.getEmail(), credentials.toString(), logOutRequest);
         applicationEventPublisher.publishEvent(logoutSuccessEvent);
         return ResponseEntity.ok(new ApiResponse(true, "로그아웃 되었습니다."));
-    }
-
-    /**
-     * 비밀번호 찾기에서 임시비밀번호 발급하기
-     * @param requestMap
-     * @return
-     */
-    @PostMapping("/changePW")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> changePW(@RequestBody HashMap<String, String> requestMap) {
-        // 요청받은 HashMap에서 이메일과 사용자 아이디 추출
-        String email = requestMap.get("email");
-        String username = requestMap.get("username");
-
-        // 비밀번호 찾기 및 임시 비밀번호 발급 로직
-        Map<String, Object> response = userService.changePW(username, email); // userService로 결과 받기
-
-        // 결과를 ResponseEntity로 반환
-        return ResponseEntity.ok(response);
     }
 
 }

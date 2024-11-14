@@ -122,8 +122,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers("/**/api/topic/**").permitAll()
                 .antMatchers("/**/api/app/**").permitAll()
                 .antMatchers("/**/api/chat/**").permitAll()
-                .antMatchers("/**/api/weather/**").permitAll()
-                .antMatchers("/**/api/diary/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -137,13 +135,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/api/chat") // socket 연결 url
+        registry.addEndpoint("/chat") // socket 연결 url
                 .setAllowedOriginPatterns("*"); // CORS 허용 범위
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/api/topic"); // 구독 url
-        registry.setApplicationDestinationPrefixes("/api/app"); // prefix 정의
+        registry.enableSimpleBroker("/topic"); // 구독 url
+        registry.setApplicationDestinationPrefixes("/app"); // prefix 정의
     }
 }

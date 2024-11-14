@@ -1,5 +1,7 @@
 package kr.re.kh.controller.auth;
 
+import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.ChatMessageCreateCommand;
 import kr.re.kh.model.payload.request.ChatMessageRequest;
 import kr.re.kh.model.payload.response.ChatMessageResponse;
@@ -13,6 +15,8 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +26,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api")
 @AllArgsConstructor
 public class ChatController {
 
@@ -30,31 +33,35 @@ public class ChatController {
 
     @MessageMapping("/chat/rooms/{roomId}/send")
     @SendTo("/topic/public/rooms/{roomId}")
-    public ResponseEntity<?> sendMessage(@DestinationVariable Long roomId, @Payload ChatMessageRequest chatMessageRequest) {
-        log.info(roomId.toString());
+    public ResponseEntity<?> sendMessage(@Payload ChatMessageRequest chatMessageRequest) {
         log.info(chatMessageRequest.toString());
-
-        // 생각을 해보니까 roomId는 숫자를 랜덤으로 설정해서 넣어주어야 될것 같다 안그러면 다른 사람들이 대화방에 침입 가능성이 있음.
-
-
         ChatMessageCreateCommand chatMessageCreateCommand = ChatMessageCreateCommand.builder()
                 .content(chatMessageRequest.getText())
-                .from(chatMessageRequest.getFrom())
-                .userId(6L) // userID는 백엔드 내부에서 가져오는 걸로 로직 구성 준비중...
-                .roomId(roomId)
+                .userId(chatMessageRequest.getUserID())
+                .friendId(chatMessageRequest.getFriendID())
+                .roomID(chatMessageRequest.getRoomId())
                 .build();
-        chatService.chat(chatMessageCreateCommand);
-//        Long chatId = chatMessageCreateCommand.getRoomId();
-        // 위 chatId 대신 아래의 서비스 로직 구현
-        // chatService.chat(chatMessageCreateCommand);
-        // 1. 방 번호가 없으면 방을 만들고 방금 받은 메시지를  db에 넣고
-        // 1번의 구조는 방테이블, 메시지 테이블 필요
-        // 2. 생성된 방에 메시지 목록을 쿼리해서 리턴
-        List<ChatMessageResponse> messageResponseList = new ArrayList<>();
+        chatService.saveMsg(chatMessageCreateCommand);
 
-        // messageResponseList = chatService.chat(chatMessageCreateCommand);
+        // 사용자가 사용자의 채팅방을 만들때 생성이 안되는 로직을 넣어야됨.
 
-        return ResponseEntity.ok(messageResponseList);
+        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
+                .text(chatMessageRequest.getText())
+                .userID(chatMessageRequest.getUserID())
+                .roomId(chatMessageRequest.getRoomId())
+                .friendID(chatMessageRequest.getFriendID())
+                .build();
+
+        return ResponseEntity.ok(chatMessage);
+    }
+
+    @GetMapping("/api/chat/uuid")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> generateUUID(
+            @CurrentUser CustomUserDetails currentUser,
+            @RequestParam("friendID") Long friendID
+    ) {
+        return ResponseEntity.ok(chatService.checkRoom(currentUser, friendID));
     }
 
 }

@@ -9,16 +9,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ChatMessageCreateCommand {
-    private Long roomId;
+    private String roomID;
     private String content;
-    private String from;
     private Long userId;
+    private Long friendId;
 
     @Builder
-    public ChatMessageCreateCommand(Long roomId, String content, String from, Long userId) {
-        this.roomId = roomId;
+    public ChatMessageCreateCommand(String content, Long userId, Long friendId, String roomID) {
         this.content = content;
-        this.from = from;
         this.userId = userId;
+        this.friendId = friendId;
+        this.roomID = roomID;
     }
 }
