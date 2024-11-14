@@ -84,6 +84,14 @@ public class UserService {
     }
 
     /**
+     * id로 해당 사용자 존재 유무 체크
+     * 사용 위치 : friendshipController
+     * @param id
+     * @return
+     */
+    public Boolean existsById(Long id) { return userRepository.existsById(id); }
+
+    /**
      * 사용자 저장
      * @param user
      * @return
