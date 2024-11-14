@@ -47,10 +47,10 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 50MB
+      max-request-size: 50MB
       location: C:\\WAS_DATA\\multipart\\temp
-      file-size-threshold: 100MB
+      file-size-threshold: 1MB
   #  sql:
   #    init:
   #      mode: always
@@ -82,6 +82,8 @@ mybatis:
   #        SQL: DEBUG
   file:
     path: C:\\WAS_DATA\\mybatis\\mybatis-log.txt
+file:
+  upload-dir: "C:/WAS_DATA/mybatis/"
 
 #JWT properties
 app:
