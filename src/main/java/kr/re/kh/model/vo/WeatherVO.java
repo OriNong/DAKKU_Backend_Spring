@@ -1,7 +1,6 @@
 package kr.re.kh.model.vo;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter

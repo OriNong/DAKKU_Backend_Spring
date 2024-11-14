@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MemberVO {
 
-    private Long memberId;
+    private Long userId;
     private String email;
-    private boolean emailVerified;
+    private boolean isEmailVerified;
     private String username;
     private String password;
     private String name;
-    private boolean active;
+    private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
