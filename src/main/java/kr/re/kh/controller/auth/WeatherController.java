@@ -18,6 +18,7 @@ public class WeatherController {
     // http://api.openweathermap.org/geo/1.0/direct?q=Seoul&limit=5&appid=e2799674d5b13024688e4a3159a6829d
     // 위도 경도 기준 날씨 정보 url
     // http://api.openweathermap.org/data/2.5/weather?lat=37.5666791&lon=126.9782914&appid=e2799674d5b13024688e4a3159a6829d
+
     // 날씨 상태 코드에 맞는 이모티콘을 반환하는 API
     @GetMapping("/weatherIcon")
     public String getWeatherIcon(@RequestParam("weatherId") int weatherId) {

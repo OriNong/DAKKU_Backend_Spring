@@ -67,7 +67,7 @@
     </select>
 
     <!-- 파일 저장 -->
-    <insert id="insertFile" parameterType="UploadFile" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertFile" parameterType="UploadFile" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO upload_file (
             file_target,
             file_name,
@@ -95,12 +95,14 @@
         DELETE FROM upload_file WHERE id = #{id}
         <if test="fileTarget != null and fileTarget != ''">
             AND file_target = #{fileTarget}
-        </if>;
+        </if>
 
-        DELETE FROM file_map WHERE file_id = #{id}
-        <if test="fileTarget != null and fileTarget != ''">
-            AND file_target = #{fileTarget}
-        </if>;
+
+
+<!--        DELETE FROM file_map WHERE file_id = #{id}-->
+<!--        <if test="fileTarget != null and fileTarget != ''">-->
+<!--            AND file_target = #{fileTarget}-->
+<!--        </if>;-->
 
     </delete>
 

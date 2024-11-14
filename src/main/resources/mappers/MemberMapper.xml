@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.Membermapper">
+
+    <select id="findUserId" parameterType="kr.re.kh.model.vo.MemberVO" resultType="kr.re.kh.model.vo.MemberVO">
+        SELECT
+        user_id,
+        email,
+        is_email_verified,
+        username,
+        password,
+        name,
+        is_active,
+        created_at,
+        updated_at
+        FROM
+        MEMBERSHIP
+        WHERE
+        user_id = #{userId}
+        AND password = STANDARD_HASH(#{password}, 'SHA256')
+        AND is_active = 1
+
+    </select>
+
+    <update id="updatePW" parameterType="kr.re.kh.model.vo.MemberVO">
+        UPDATE USERS SET
+        password = STANDARD_HASH(#{password}, 'SHA256')
+        WHERE username = #{username}
+    </update>
+
+</mapper>
