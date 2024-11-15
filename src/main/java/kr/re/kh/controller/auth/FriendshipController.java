@@ -25,9 +25,9 @@ public class FriendshipController {
             @PathVariable("id") Long receiverId) {
 
         // 친구 요청을 보낸 상대가 존재하지 않는 경우의 처리
-        if (!userService.existsById(receiverId)) {
-            throw new BadRequestException("존재하지 않는 사용자 입니다.");
-        }
+//        if (!userService.existsById(receiverId)) {
+//            throw new BadRequestException("존재하지 않는 사용자 입니다.");
+//        }
 
         // 친구 요청을 보낸 현재 로그인 사용자 id
         Long requesterId = currentUser.getId();

@@ -55,10 +55,10 @@ public class User extends DateAudit {
     @OneToMany(mappedBy = "user")
     private List<FriendShip> friendShipList = new ArrayList<>();
 
-    // 프로필 이미지 컬럼
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROFILE_IMAGE_ID")
-    private UploadFile profileImage;
+//    // 프로필 이미지 컬럼
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "PROFILE_IMAGE_ID")
+//    private UploadFile profileImage;
 
     public User() {
         super();
@@ -73,7 +73,7 @@ public class User extends DateAudit {
         active = user.getActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
-        profileImage = user.getProfileImage();
+//        profileImage = user.getProfileImage();
     }
 
     public void addRole(Role role) {
@@ -160,8 +160,8 @@ public class User extends DateAudit {
 
     public List<FriendShip> getFriendShipList() { return friendShipList; }
 
-    public UploadFile getProfileImage() { return profileImage; }
-
-    public void setProfileImage(UploadFile profileImage) { this.profileImage = profileImage; }
+//    public UploadFile getProfileImage() { return profileImage; }
+//
+//    public void setProfileImage(UploadFile profileImage) { this.profileImage = profileImage; }
 
 }
