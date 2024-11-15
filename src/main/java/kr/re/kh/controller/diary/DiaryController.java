@@ -1,11 +1,16 @@
 package kr.re.kh.controller.diary;
 
+import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.DiaryVO;
 import kr.re.kh.service.DiaryService;
+import kr.re.kh.service.WeatherIconService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +22,9 @@ public class DiaryController {
 
     @Autowired
     private DiaryService diaryService;
+
+    @Autowired
+    private WeatherIconService weatherService;
 
     /**
      * 로그인한 사용자의 일기 목록
@@ -68,14 +76,19 @@ public class DiaryController {
      * @return : 저장 완료
      */
     @PostMapping("/save")
-    public ResponseEntity<?> saveDiary(@RequestBody DiaryVO diary, @RequestParam("weatherIcon") String weatherIcon) {
-        // 날씨 이모티콘을 DiaryVO에 설정
-        diary.setWeatherIcon(weatherIcon);
-
-        diaryService.saveDiary(diary);
-        return ResponseEntity.ok(new ApiResponse(true, "저장되었습니다."));
+    @PreAuthorize("hasRole('USER') or hasRole('SYSTEM') or hasRole('ADMIN')") // user만 일기 저장할 수 있게 한다.
+    public ResponseEntity<?> saveDiary(@RequestBody DiaryVO diary, @CurrentUser CustomUserDetails currentUser) {
+        try {
+            // 일기 저장
+            log.info(diary.toString());
+            diary.setMemberId(currentUser.getId());
+            diaryService.saveDiary(diary);
+            return ResponseEntity.ok(new ApiResponse(true, "저장되었습니다."));
+        } catch (Exception e) {
+            e.printStackTrace(); // 서버 로그에 에러 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "일기 저장 중 오류 발생"));
+        }
     }
-
     /**
      * 일기 수정
      * @param diaryId : 일기 고유 id

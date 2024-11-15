@@ -31,7 +31,11 @@ public class DiaryService {
     }
     // 일기 저장
     public void saveDiary(DiaryVO diary) {
-        diaryMapper.saveDiary(diary);
+        try {
+            diaryMapper.saveDiary(diary); // DB 저장
+        } catch (Exception e) {
+            throw new RuntimeException("일기 저장 실패", e); // 예외 처리
+        }
     }
     // 일기 고유 id로 일기 조회
     public DiaryVO selectDiaryByDiaryId(Long diaryId) {

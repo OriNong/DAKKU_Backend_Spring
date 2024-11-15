@@ -19,5 +19,9 @@ public class DiaryVO {
     private Long diaryLikes;                // 일기 좋아요 수
     private String weatherIcon;             // 날씨 이모티콘
     private LocalDateTime diaryCrtDate;     // 일기 생성 일자
-    private LocalDateTime diartyUpdDate;    // 일기 수정 일자
+    private LocalDateTime diaryUpdDate;    // 일기 수정 일자
+
+    public void setWeatherIcon(String weatherIcon) {
+        this.weatherIcon = weatherIcon;
+    }
 }

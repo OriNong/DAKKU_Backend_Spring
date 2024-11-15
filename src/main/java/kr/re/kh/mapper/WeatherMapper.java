@@ -8,4 +8,7 @@ public interface WeatherMapper {
     String selectWeatherIconByWeatherId(int weatherId);
 
     String getWeatherById(int weatherId);
+
+    // 날씨 상태 코드와 이모티콘을 DB에 저장
+    void insertWeatherIcon(int weatherId, String weatherIcon);
 }

@@ -36,10 +36,12 @@ public class UploadFile {
 
     private String username;
 
+    private String fileUrl;   // 클라이언트가 접근할 수 있는 URL
+
     @JsonIgnore
     private LocalDateTime createdAt;
 
-    public UploadFile(String fileName, String saveFileName, String filePath, String contentType, long fileSize, String fileDir, String fileTarget, String username) {
+    public UploadFile(String fileName, String saveFileName, String filePath, String contentType, String fileUrl, long fileSize, String fileDir, String fileTarget, String username) {
         this.fileName = fileName;
         this.saveFileName = saveFileName;
         this.filePath = filePath;
@@ -48,10 +50,12 @@ public class UploadFile {
         this.fileDir = fileDir;
         this.fileTarget = fileTarget;
         this.username = username;
+        this.fileUrl = fileUrl;
+
     }
 
     @Builder
-    public UploadFile(String fileTarget, String fileName, String saveFileName, String filePath, String fileDir, String contentType, long fileSize, LocalDateTime createdAt, String username) {
+    public UploadFile(String fileTarget, String fileName, String saveFileName, String filePath, String fileDir, String contentType, String fileUrl, long fileSize, LocalDateTime createdAt, String username) {
         this.fileTarget = fileTarget;
         this.fileName = fileName;
         this.saveFileName = saveFileName;
@@ -61,6 +65,7 @@ public class UploadFile {
         this.fileSize = fileSize;
         this.createdAt = createdAt;
         this.username = username;
+        this.fileUrl = fileUrl;
     }
 }
 

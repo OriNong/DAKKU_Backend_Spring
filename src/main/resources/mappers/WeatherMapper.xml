@@ -16,4 +16,10 @@
     <select id="findByWeatherStatus" parameterType="string" resultType="WeatherVO">
         SELECT 1
     </select>
+
+    <insert id="insertWeatherIcon" parameterType="int">
+        INSERT INTO weather_icons (weather_id, weather_icon)
+        VALUES (#{weatherId}, #{weatherIcon})
+    </insert>
+
 </mapper>

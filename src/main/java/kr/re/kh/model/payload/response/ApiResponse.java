@@ -14,9 +14,11 @@
 package kr.re.kh.model.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse {
 
@@ -25,6 +27,7 @@ public class ApiResponse {
     private final String timestamp;
     private final String cause;
     private final String path;
+    private String message;
 
     public ApiResponse(Boolean success, String data, String cause, String path) {
         this.timestamp = Instant.now().toString();
@@ -42,23 +45,7 @@ public class ApiResponse {
         this.path = null;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public String getCause() {
-        return cause;
-    }
-
-    public String getPath() {
-        return path;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

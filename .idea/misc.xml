@@ -8,6 +8,7 @@
       <item index="3" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
     </list>
     <writeAnnotations>
+      <writeAnnotation name="javax.persistence.OneToMany" />
       <writeAnnotation name="org.springframework.beans.factory.annotation.Value" />
     </writeAnnotations>
   </component>

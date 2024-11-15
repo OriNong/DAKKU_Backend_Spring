@@ -1,7 +1,6 @@
 package kr.re.kh.model;
 
 import kr.re.kh.model.audit.DateAudit;
-import kr.re.kh.model.vo.UploadFile;
 import kr.re.kh.validation.annotation.NullOrNotBlank;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
@@ -73,7 +72,6 @@ public class User extends DateAudit {
         active = user.getActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
-//        profileImage = user.getProfileImage();
     }
 
     public void addRole(Role role) {
@@ -159,9 +157,4 @@ public class User extends DateAudit {
     }
 
     //public List<FriendShip> getFriendShipList() { return friendShipList; }
-
-//    public UploadFile getProfileImage() { return profileImage; }
-//
-//    public void setProfileImage(UploadFile profileImage) { this.profileImage = profileImage; }
-
 }
