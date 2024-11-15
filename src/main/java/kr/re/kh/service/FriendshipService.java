@@ -42,8 +42,8 @@ public class FriendshipService {
                     .build();
 
             // 각각의 유저 리스트에 친구 요청 정보 저장
-            optionalFromUser.get().getFriendShipList().add(friendshipTo);
-            optionalToUser.get().getFriendShipList().add(friendshipFrom);
+//            optionalFromUser.get().getFriendShipList().add(friendshipTo);
+//            optionalToUser.get().getFriendShipList().add(friendshipFrom);
 
             friendshipRepository.save(friendshipTo);
             friendshipRepository.save(friendshipFrom);

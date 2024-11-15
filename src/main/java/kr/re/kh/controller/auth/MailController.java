@@ -40,7 +40,7 @@ public class MailController {
 
     // 인증번호 검증
     // RequestBody로 받은 mailInfo를 사용해서 인증을 거친다.
-    @GetMapping("/verifyCode")
+    @PostMapping("/verifyCode")
     public ResponseEntity<?> verifyCode(@RequestBody HashMap<String, Object> mailInfo) {
         String mail = (String) mailInfo.get("mail"); // body로 받은 메일을 String mail에 저장.
         Integer code = Integer.parseInt((String) mailInfo.get("code")); // body로 받은 인증번호를 Integer code로 보관.
