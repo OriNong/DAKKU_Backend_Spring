@@ -1,5 +1,6 @@
 package kr.re.kh.service;
 
+import kr.re.kh.mapper.SseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @AllArgsConstructor
 public class SseService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    private final SseMapper sseMapper;
 
     public void register(SseEmitter sseEmitter) {
         sseEmitter.onTimeout(() -> timeout(sseEmitter));
@@ -44,6 +46,19 @@ public class SseService {
             } catch(Exception e) {
                 emitter.complete();
             }
+        }
+    }
+
+    /**
+     * 사용자에게 여러번 알림을 오는걸 방지하고자 데이터베이스에서 값을 확인후 컬럼에 0,1을 확인후 알림 전송
+     * @param userID
+     * @param msg
+     */
+    public void userMark(Long userID, String msg) {
+        boolean userChk = Long.valueOf(1).equals(sseMapper.userCheck(userID));
+        if (!userChk) {
+            sendToUI(msg, userID);
+            sseMapper.userUpdate(userID);
         }
     }
 }

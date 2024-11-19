@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.re.kh.mapper.SseMapper">
+
+    <insert id="createSseInfo" parameterType="Long">
+        INSERT INTO SSEINTO (USER_ID) VALUES (#{userID})
+    </insert>
+
+    <update id="userUpdate" parameterType="Long">
+        UPDATE SSEINTO SET CHAT_INFO = 1 WHERE USER_ID = #{userID}
+    </update>
+
+    <select id="userCheck" parameterType="Long" resultType="Long">
+        SELECT CHAT_INFO FROM SSEINTO WHERE USER_ID = #{userID}
+    </select>
+
+</mapper>

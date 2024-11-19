@@ -15,6 +15,7 @@ package kr.re.kh.service;
 
 import kr.re.kh.exception.ResourceAlreadyInUseException;
 import kr.re.kh.exception.TokenRefreshException;
+import kr.re.kh.mapper.SseMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.User;
 import kr.re.kh.model.UserDevice;
@@ -45,6 +46,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDeviceService userDeviceService;
 
+    // 알림 기능 관련 Mapper
+    private final SseMapper sseMapper;
+
     /**
      * 사용자 등록
      * 등록되면 user object 생성
@@ -61,6 +65,7 @@ public class AuthService {
         log.info(newRegistrationRequest.toString());
         User newUser = userService.createUser(newRegistrationRequest);
         User registeredNewUser = userService.save(newUser);
+        sseMapper.createSseInfo(registeredNewUser.getId()); // 해당 메서드를 호출해서 SSEINTO 테이블에 유저를 자동으로 추가
         return Optional.ofNullable(registeredNewUser);
     }
 
