@@ -36,12 +36,8 @@ public class ChatController {
                 .roomID(chatMessageRequest.getRoomId())
                 .build();
 
-        if (chatMessageRequest.getUserID() == null || chatMessageRequest.getUserID().equals(0L)) {
-            return ResponseEntity.status(500).body(new ApiResponse(false, "사용자 id가 비어있습니다."));
-        }
-
-        if (!chatMessageRequest.getUserID().equals(chatMessageRequest.getFriendID())) {
-            return ResponseEntity.status(500).body(new ApiResponse(false, "사용자 본인의 채팅방을 만들수가 없습니다."));
+        if (chatMessageRequest.getUserID().equals(chatMessageRequest.getFriendID())) {
+            return ResponseEntity.ok("사용자 본인의 룸을 만들수 없습니다.");
         }
 
         chatService.saveMsg(chatMessageCreateCommand);

@@ -11,7 +11,7 @@
     </insert>
 
     <select id="messageSearch" parameterType="String" resultType="MessageVO">
-        SELECT * FROM CHATMESSAGETABLE WHERE ROOM_ID = #{roomID}
+        SELECT * FROM CHATMESSAGETABLE WHERE ROOM_ID = #{roomID} ORDER BY INPUT_DATE ASC
     </select>
 
     <select id="checkUUID" parameterType="java.util.HashMap" resultType="String">

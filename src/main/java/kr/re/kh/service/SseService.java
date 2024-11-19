@@ -16,8 +16,6 @@ public class SseService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     public void register(SseEmitter sseEmitter) {
-        log.info("브라우저마다 eventSource를 연결하면 emmiter 객체가 생성되고 등록된다.");
-
         sseEmitter.onTimeout(() -> timeout(sseEmitter));
         sseEmitter.onCompletion(() -> timeout(sseEmitter));
 
