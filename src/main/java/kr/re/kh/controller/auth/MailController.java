@@ -32,9 +32,9 @@ public class MailController {
         try {
             int code = mailService.sendVerificationCode(mailStr); // 메일을 파라미터로 전송후 보낸 인증번호를 리턴 받는다. 그후 code로 변수 저장
             verificationCodes.put(mailStr, code); // 받은 인증번호를 위에 선언된 Map 변수로 보관후 추후 '인증번호 검증'에서 사용된다.
-            return ResponseEntity.ok(new ApiResponse(true, "Code sent complete")); // 정상적으로 전송되면 true를 보낸후 전송완료 메시지를 보낸다.
+            return ResponseEntity.ok(new ApiResponse(true, "이메일 전송완료!")); // 정상적으로 전송되면 true를 보낸후 전송완료 메시지를 보낸다.
         } catch (MessagingException e) {
-            throw new RuntimeException(e); // 만약 전송을 못했으면 오류 로그를 띄운다.
+            return ResponseEntity.ok(new ApiResponse(false, "이메일을 전송하지 못했습니다.")); // 이메일을 전송하지 못하면 전송실패를 띄운다.
         }
     }
 

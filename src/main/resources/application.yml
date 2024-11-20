@@ -24,19 +24,16 @@ spring:
       enabled: always
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    #url: ENC(-gL+MfIBpcqeppb9FauYZLazjQUNLQBVs8kdA6rqrpaLLvD4eK2ueaxn5xILCUO/D9jF+fyMJyz8=)
-    #username: ENC(FDovxwuzSqKFIByhxGOQoQ==)
-    #password: ENC(EFTlYROOJqqEUDRXV22oGg==)
-    url: jdbc:log4jdbc:oracle:thin:@han-jun.kro.kr:1521:xe
-    username: khFinalProject
-    password: project
+    url: ENC(Q+k9X7y5Nawv7egLeyljjAW9Chd/IFVeQ1teBdnWGbUATWlehBZWoQ9Y5blY2T4948eVwnnxKEQ4zz9mFbyroTHL3Wm10cM+odCxZzYY4Gmkvk7wBv27fsUE8N9GyUWR)
+    username: ENC(Xl3g9KoWMEszi3enimv8lS18nGrD7Z4Ef2GEfepZgs/VnD2BE/SLkHVqL6R9vJ3u)
+    password: ENC(/QJ6Mr294keQks2jLqob0KoBrnSLuwrmnvwD9zBf5xnQYlNuI3t7eVhoW8SYZlgi)
     type: com.zaxxer.hikari.HikariDataSource
   mail:
     host: smtp.gmail.com
     port: 587
     # 이메일 인증을 할 이메일과 앱 비밀번호를 기입.
-    username: kckt3741@gmail.com
-    password: jdlk fnqh yoce ubxd
+    username: ENC(5uDhtFxPjjYHTV9nfmT9m0H8yyyvJ07Etrw1cfAAEemzuv1rjFkcG23oloKIA1ttFIbRFc1k6z94MzJf3dBN3w==)
+    password: ENC(zEMn8ZmB15NsxyprekriL8lUvHORZnaaUULCxX/x7aPjDHTxjegz5qmS0Z3FI56r6q49l7yK1+eRHZw7asZDGA==)
     properties:
       mail:
         smtp:
