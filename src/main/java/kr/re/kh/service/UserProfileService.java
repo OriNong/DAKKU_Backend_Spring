@@ -77,4 +77,8 @@ public class UserProfileService {
         }
         return false;
     }
+    // 프로필 이미지 조회
+    public Optional<UploadFile> getProfileImage(Long userId) {
+        return uploadFileMapper.selectProfileImageByUserId(userId);
+    }
 }

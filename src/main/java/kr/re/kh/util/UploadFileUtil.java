@@ -56,44 +56,18 @@ public class UploadFileUtil {
     }
 
     /**
-     * @param uploadPath
+     * @param uploadDir
      * @param file
      * @return 생성된 파일 명(유일한 값)
      * @throws IllegalStateException
      * @throws IOException
      */
-    public static String fileSave(String uploadPath, MultipartFile file) throws Exception {
+    public static String fileSave(String uploadDir, MultipartFile file) throws IOException {
 
-        if (fileMimeType(file.getInputStream())) {
-            File uploadPathDir = new File(uploadPath);
-            if ( !uploadPathDir.exists() ) uploadPathDir.mkdirs();
-
-            // 파일 중복명 처리
-            String genId = UUID.randomUUID().toString();
-
-            String originalFileName = file.getOriginalFilename();
-            String fileExtension = getExtension(originalFileName);
-            String saveFileName = genId + "." + fileExtension;
-
-            String savePath = calcPath(uploadPath);
-
-            File target = new File(uploadPath + savePath, saveFileName);
-
-            FileCopyUtils.copy(file.getBytes(), target);
-
-            // 업로드 하는 파일이 이미지이고, 이미지의 가로 사이즈가 1920보다 크면 1920픽셀로 리사이징해서 저장한다.
-            if (mimeIsImage(file)) {
-                BufferedImage image = ImageIO.read(file.getInputStream());
-                int width = image.getWidth();
-                if (width >= 1920) {
-                    makeThumbnail(uploadPath, savePath, saveFileName, 1920);
-                }
-            }
-
-            return makeFilePath(uploadPath, savePath, saveFileName);
-        } else {
-            throw new BadRequestException("파일을 업로드 할 수 없습니다. 업로드 불가능한 파일타입이거나 위변조된 파일일 가능성이 있습니다.");
-        }
+        String saveFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        File saveFile = new File(uploadDir, saveFileName);
+        file.transferTo(saveFile); // 파일을 지정된 디렉토리에 저장
+        return saveFileName;
     }
 
     /**
