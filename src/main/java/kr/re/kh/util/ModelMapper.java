@@ -2,7 +2,6 @@ package kr.re.kh.util;
 
 import kr.re.kh.model.User;
 import kr.re.kh.model.payload.response.*;
-import kr.re.kh.model.payload.response.UserListResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

@@ -4,10 +4,8 @@ import kr.re.kh.model.vo.MessageVO;
 import kr.re.kh.model.vo.RoomVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import javax.swing.text.html.Option;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface ChatMapper {

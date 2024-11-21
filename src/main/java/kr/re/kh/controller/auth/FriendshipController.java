@@ -3,7 +3,6 @@ package kr.re.kh.controller.auth;
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.model.CustomUserDetails;
-import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.service.FriendshipService;
 import kr.re.kh.service.UserService;
 import lombok.AllArgsConstructor;
@@ -56,13 +55,18 @@ public class FriendshipController {
     /**
      * 받은 친구 요청 수락
      * @param friendshipId : 자신이 수신한 친구 요청 관계 friendshipVO의 고유 id
-     * @return
+     * @return :
      */
     @PostMapping("/user/friends/received/accept/{friendshipId}")
     public ResponseEntity<?> acceptFriendshipRequest(@PathVariable("friendshipId") Long friendshipId){
     return friendshipService.acceptFriendshipRequest(friendshipId);
     }
 
+    /**
+     * 받은 친구 요청 거절
+     * @param friendshipId : 자신이 수신한 친구 요청 관계 friendshipVO의 고유 id
+     * @return :
+     */
     @PostMapping("/user/friends/received/reject/{friendshipId}")
     public ResponseEntity<?> rejectFriendshipRequest(@PathVariable("friendshipId") Long friendshipId){
         return friendshipService.rejectFriendshipRequest(friendshipId);

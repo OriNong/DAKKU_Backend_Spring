@@ -8,9 +8,7 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "USERS")
@@ -50,9 +48,6 @@ public class User extends DateAudit {
 
     @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
     private Boolean isEmailVerified;
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-//    private List<FriendShip> friendShipList = new ArrayList<>();
 
 //    // 프로필 이미지 컬럼
 //    @OneToOne(fetch = FetchType.LAZY)
@@ -156,5 +151,4 @@ public class User extends DateAudit {
         isEmailVerified = emailVerified;
     }
 
-//    public List<FriendShip> getFriendShipList() { return friendShipList; }
 }

@@ -6,7 +6,6 @@ import kr.re.kh.model.payload.request.BoardRequest;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.SearchHelper;
 import kr.re.kh.service.BoardService;
-import kr.re.kh.service.FileMapService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

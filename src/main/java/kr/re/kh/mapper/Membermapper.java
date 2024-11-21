@@ -2,8 +2,6 @@ package kr.re.kh.mapper;
 
 import kr.re.kh.model.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper
 public interface Membermapper {

@@ -6,13 +6,10 @@ import kr.re.kh.mapper.Membermapper;
 import kr.re.kh.model.payload.request.SpRequest;
 import kr.re.kh.model.payload.response.SpResponse;
 import kr.re.kh.model.vo.MemberVO;
-import kr.re.kh.service.FileMapService;
 import kr.re.kh.service.MemberService;
-import kr.re.kh.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 @Service

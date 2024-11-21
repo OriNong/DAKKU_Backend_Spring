@@ -6,7 +6,6 @@ import kr.re.kh.model.FriendshipStatus;
 import kr.re.kh.model.User;
 import kr.re.kh.model.vo.FriendshipVO;
 import kr.re.kh.model.payload.response.WaitingFriendListResponse;
-import kr.re.kh.repository.FriendshipRepository;
 import kr.re.kh.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import java.util.Optional;
 public class FriendshipService {
 
     private final UserRepository userRepository;
-    private final FriendshipRepository friendshipRepository;
     private final FriendshipMapper friendshipMapper;
 
     /**

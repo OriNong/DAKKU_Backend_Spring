@@ -1,7 +1,6 @@
 package kr.re.kh.controller.auth;
 
 import kr.re.kh.annotation.CurrentUser;
-import kr.re.kh.mapper.SseMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.ChatMessageCreateCommand;
 import kr.re.kh.model.payload.request.ChatMessageRequest;

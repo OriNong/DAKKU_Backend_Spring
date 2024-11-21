@@ -20,7 +20,6 @@ import kr.re.kh.model.token.RefreshToken;
 import kr.re.kh.repository.UserDeviceRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

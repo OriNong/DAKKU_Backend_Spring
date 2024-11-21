@@ -1,10 +1,8 @@
 package kr.re.kh.util;
 
-import kr.re.kh.exception.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.imgscalr.Scalr;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -16,7 +14,6 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 public class UploadFileUtil {

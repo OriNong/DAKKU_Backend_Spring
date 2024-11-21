@@ -3,7 +3,6 @@ package kr.re.kh.model.vo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
