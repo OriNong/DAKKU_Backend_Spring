@@ -20,6 +20,7 @@ public class UserResponse {
     private Long id;
     private boolean active;
     private String name;
+    // friendship List 필드로 추가
 
     public UserResponse(String username, String email, Set<Role> roles, Long id) {
         this.username = username;

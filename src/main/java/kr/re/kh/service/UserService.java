@@ -28,6 +28,7 @@ import kr.re.kh.model.payload.response.UserListResponse;
 import kr.re.kh.model.payload.response.UserResponse;
 import kr.re.kh.repository.UserRepository;
 import kr.re.kh.util.ModelMapper;
+import kr.re.kh.util.Util;
 import kr.re.kh.util.ValidatePageNumberAndSize;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -155,10 +156,12 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호는 영문, 숫자 포함 8자 이상 25자 이하이어야 합니다.");
         }
         // 4. 이름 유효성 검사
-        String nameRegex = "^^([a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]).{1,10}$";
+        String nameRegex = "^([a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]).{1,10}$";
         if (!Pattern.matches(nameRegex, name)){
             throw new IllegalArgumentException("이름은 영문, 한글을 포함한 2자에서 10자 길이로 작성해야 합니다.");
+
         }
+        log.info(name);
         // 아이디는 중복시 무결성 제약조건 오류로 점검, 이메일은 중복시 필드값 사용 중 오류로 점검
 
         User newUser = new User();
@@ -372,4 +375,34 @@ public class UserService {
             throw new BadRequestException("잘못된 요청입니다.");
         }
     }
+    /**
+     * 비밀번호찾기(임시비번발급)
+     * @param
+     * @return
+     */
+    public Map<String, Object> changePW(String username, String email) {
+        Map<String, Object> responseMap = new HashMap<>();
+        // 사용자 정보 조회
+        Optional<User> optionalUser = userRepository.findByUsernameAndEmail(username, email);
+        if (optionalUser.isPresent()) {
+            // 랜덤 비밀번호 생성 (6자리)
+            String randomPw = Util.randomString(6);
+            // 비밀번호 암호화
+            String encryptedPassword = passwordEncoder.encode(randomPw);
+            // 비밀번호 변경 로직
+            User user = optionalUser.get();
+            user.setPassword(encryptedPassword);
+            userRepository.save(user);
+            // 성공 메시지와 임시 비밀번호를 responseMap에 담기
+            responseMap.put("result", true);
+            responseMap.put("message", "임시 비밀번호는 " + randomPw + "입니다. 반드시 복사해주세요.");
+        } else {
+            // 계정이 없으면 오류 메시지 반환
+            responseMap.put("result", false);
+            responseMap.put("message", "계정이 없습니다.");
+        }
+        return responseMap;
+    }
+
+
 }

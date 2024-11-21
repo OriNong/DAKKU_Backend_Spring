@@ -51,7 +51,7 @@ public class User extends DateAudit {
     @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
     private Boolean isEmailVerified;
 
-//    @OneToMany(mappedBy = "user")
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<FriendShip> friendShipList = new ArrayList<>();
 
 //    // 프로필 이미지 컬럼
@@ -156,5 +156,5 @@ public class User extends DateAudit {
         isEmailVerified = emailVerified;
     }
 
-    //public List<FriendShip> getFriendShipList() { return friendShipList; }
+//    public List<FriendShip> getFriendShipList() { return friendShipList; }
 }

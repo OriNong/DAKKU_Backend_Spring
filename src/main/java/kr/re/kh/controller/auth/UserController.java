@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -48,7 +50,7 @@ public class UserController {
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@CurrentUser CustomUserDetails customUserDetails,
-                                     @Valid @RequestBody LogOutRequest logOutRequest) {
+                                        @Valid @RequestBody LogOutRequest logOutRequest) {
         log.info(customUserDetails.toString());
         log.info(logOutRequest.toString());
         userService.logoutUser(customUserDetails, logOutRequest);
@@ -57,6 +59,23 @@ public class UserController {
         OnUserLogoutSuccessEvent logoutSuccessEvent = new OnUserLogoutSuccessEvent(customUserDetails.getEmail(), credentials.toString(), logOutRequest);
         applicationEventPublisher.publishEvent(logoutSuccessEvent);
         return ResponseEntity.ok(new ApiResponse(true, "로그아웃 되었습니다."));
+    }
+
+    /**
+     * Password 임시발급하여 바꾸기
+     * @param requestMap
+     * @return
+     */
+    @PostMapping("/changePW")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> changePW(@RequestBody HashMap<String, String> requestMap) {
+        // 요청받은 HashMap에서 이메일과 사용자 아이디 추출
+        String username = requestMap.get("username");
+        String email = requestMap.get("email");
+        // 비밀번호 찾기 및 임시 비밀번호 발급 로직
+        Map<String, Object> response = userService.changePW(username, email); // userService로 결과 받기
+        // 결과를 ResponseEntity로 반환
+        return ResponseEntity.ok(response);
     }
 
 }

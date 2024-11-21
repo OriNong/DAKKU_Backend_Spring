@@ -62,14 +62,14 @@
             memberId,
             diaryTitle,
             diaryContent,
-            isPublic,
+            <!--isPublic,-->
             weatherIcon
         )
         VALUES (
                    #{memberId},
                    #{diaryTitle},
                    #{diaryContent},
-                   #{isPublic},
+                   <!--#{isPublic},-->
                    #{weatherIcon}
                )
     </insert>
