@@ -3,6 +3,7 @@ package kr.re.kh.mapper;
 import kr.re.kh.model.vo.UploadFile;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,9 @@ public interface UploadFileMapper {
 
     // 프로필 사진 삭제
     void deleteProfileImage(Long fileId);
+
+    void insertProfileImgMap(HashMap<String, Object> map);
+
+    void deleteProfileImgMap(Long userId);
 
 }

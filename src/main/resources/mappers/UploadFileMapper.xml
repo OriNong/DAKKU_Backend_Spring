@@ -109,20 +109,21 @@
     <!-- 프로필 이미지 조회 (사용자 ID로 프로필 이미지를 찾기) -->
     <select id="selectProfileImageByUserId" parameterType="Long" resultType="UploadFile">
         SELECT
-        id,
-        file_name,
-        file_path,
-        file_dir,
-        content_type,
-        file_size,
-        save_file_name
-        FROM upload_file
-        WHERE file_target = 'profile'
-        AND username = #{userId}
+        a.id,
+        a.file_name,
+        a.file_path,
+        a.file_dir,
+        a.content_type,
+        a.file_size,
+        a.save_file_name
+        FROM upload_file a
+        LEFT OUTER JOIN PROFILE_IMG_MAP b ON a.ID = b.FILE_ID
+        WHERE a.file_target = 'profile'
+        AND b.USER_ID = #{userId}
     </select>
 
     <!-- 프로필 이미지 저장 -->
-    <insert id="insertProfileImage" parameterType="UploadFile" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertProfileImage" parameterType="UploadFile" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
         INSERT INTO upload_file (
         file_target,
         file_name,
@@ -134,7 +135,7 @@
         username,
         created_at
         ) VALUES (
-        'profile',  <!-- profile 이미지로 구분 -->
+        'profile',
         #{fileName},
         #{filePath},
         #{fileDir},
@@ -148,8 +149,15 @@
 
     <!-- 프로필 이미지 삭제 -->
     <delete id="deleteProfileImage" parameterType="Long">
-        DELETE FROM upload_file WHERE id = #{fileId} AND file_target = 'profile';
-        DELETE FROM file_map WHERE file_id = #{fileId};
+        DELETE FROM upload_file WHERE id = #{fileId} AND file_target = 'profile'
+    </delete>
+
+    <insert id="insertProfileImgMap" parameterType="java.util.HashMap">
+        INSERT INTO PROFILE_IMG_MAP (USER_ID, FILE_ID) VALUES (#{userId}, #{fileId})
+    </insert>
+
+    <delete id="deleteProfileImgMap" parameterType="Long">
+        DELETE FROM PROFILE_IMG_MAP WHERE USER_ID = #{userId}
     </delete>
 
 </mapper>

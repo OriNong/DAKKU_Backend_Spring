@@ -66,11 +66,14 @@ public class UploadFileService {
             log.info(file.toUri().toString());
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
+                log.info("1");
                 return resource;
             } else {
+                log.info("2");
                 throw new Exception("파일을 찾지 못했습니다. " + fileName);
             }
         } catch (Exception e) {
+            log.info("3");
             throw new Exception("파일을 찾지 못했습니다. " + fileName);
         }
     }

@@ -84,7 +84,7 @@ mybatis:
   file:
     path: C:\\WAS_DATA\\mybatis\\mybatis-log.txt
 file:
-  upload-dir: "C:/WAS_DATA/mybatis/"
+  upload-dir: C:\\WAS_DATA\\upload\\
 
 #JWT properties
 app:
@@ -114,6 +114,11 @@ jasypt:
 
 upload:
   path: C:\\WAS_DATA\\upload
+
+  spring:
+    jpa:
+      hibernate:
+        ddl-auto=update:
 
 logging:
   file:

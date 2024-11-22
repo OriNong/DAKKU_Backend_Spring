@@ -83,6 +83,8 @@ public class FileController {
         try {
             UploadFile uploadFileVO = uploadFileService.loadAsSaveFileName(saveFileName);
 
+            log.info(uploadFileVO.toString());
+
             if (uploadFileVO == null) return ResponseEntity.badRequest().build();
 
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -96,6 +98,9 @@ public class FileController {
             }
 
             Resource resource = uploadFileService.loadAsResource(uploadFileVO.getFileDir() + uploadFileVO.getSaveFileName());
+            log.info("{}{}", uploadFileVO.getFileDir(), uploadFileVO.getSaveFileName());
+
+            log.info(resource.toString());
             return ResponseEntity.ok().headers(httpHeaders).body(resource);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

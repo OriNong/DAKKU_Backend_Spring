@@ -3,6 +3,7 @@ package kr.re.kh.util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.imgscalr.Scalr;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -10,10 +11,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @Slf4j
 public class UploadFileUtil {
@@ -55,16 +60,23 @@ public class UploadFileUtil {
     /**
      * @param uploadDir
      * @param file
-     * @return 생성된 파일 명(유일한 값)
+     * @return 파일저장
      * @throws IllegalStateException
      * @throws IOException
      */
     public static String fileSave(String uploadDir, MultipartFile file) throws IOException {
 
-        String saveFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        File saveFile = new File(uploadDir, saveFileName);
-        file.transferTo(saveFile); // 파일을 지정된 디렉토리에 저장
-        return saveFileName;
+        String geId = UUID.randomUUID().toString();
+        String orginalFileName = file.getOriginalFilename();
+        String fileExtension = getExtension(orginalFileName);
+        String saveFilename = geId + "." + fileExtension;
+
+        String savepath = calcPath(uploadDir);
+        File target = new File(uploadDir + savepath, saveFilename);
+
+        FileCopyUtils.copy(file.getBytes(), target);
+
+        return makeFilePath(uploadDir, savepath, saveFilename);
     }
 
     /**
@@ -169,10 +181,12 @@ public class UploadFileUtil {
      * @return
      */
     public static boolean deleteFile(String filePath) {
-        File file = new File(filePath);
-        if (file.exists() && file.delete()) {
+        Path path = Paths.get(filePath);
+        try {
+            Files.delete(path);  // 파일 삭제
             return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 }
