@@ -34,7 +34,7 @@
             diaryUpdDate
         FROM diarys
         WHERE memberId = #{memberId}
-            AND isPublic = true
+            AND isPublic = 1
     </select>
 
     <!-- 공개로 게시된 일기 조회 -->
@@ -52,7 +52,7 @@
             diaryCrtDate,
             diaryUpdDate
         FROM diarys
-        WHERE isPublic = true
+        WHERE isPublic = 1
         ORDER BY diaryLikes DESC, diaryViews DESC
     </select>
     

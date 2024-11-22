@@ -28,11 +28,12 @@ public class DiaryController {
 
     /**
      * 로그인한 사용자의 일기 목록
-     * @param memberId : 로그인한 사용자의 memberID
-     * @return : 로그인한 사용자의 일기 목록
+     * @param currentUser : 로그인 사용자
+     * @return
      */
-    @GetMapping("/mypage/{memberId}")
-    public ResponseEntity<List<DiaryVO>> showMyDiary(@PathVariable("memberId") Long memberId) {
+    @GetMapping("/myDiaries")
+    public ResponseEntity<List<DiaryVO>> showMyDiary(@CurrentUser CustomUserDetails currentUser) {
+        Long memberId = currentUser.getId();
         List<DiaryVO> myDiaries = diaryService.selectAllDiaryByMemberId(memberId);
         return ResponseEntity.ok(myDiaries);
     }
@@ -42,7 +43,7 @@ public class DiaryController {
      * @param memberId : 특정 사용자의 memberId
      * @return : 특정 사용자의 일기 목록
      */
-    @GetMapping("/members/{memberId}")
+    @GetMapping("/memberDiaries/{memberId}")
     public ResponseEntity<List<DiaryVO>> showMemberDiary(@PathVariable("memberId") Long memberId) {
         List<DiaryVO> memberPublicDiaries = diaryService.selectAllPublicDiaryByMemberId(memberId);
         return ResponseEntity.ok(memberPublicDiaries);
@@ -64,8 +65,8 @@ public class DiaryController {
      * @param diaryId : 일기 고유 id
      * @return : 선택된 일기
      */
-    @GetMapping("/{diaryId}}")
-    public ResponseEntity<DiaryVO> showSelectedDiary(@PathVariable Long diaryId) {
+    @GetMapping("/select/{diaryId}")
+    public ResponseEntity<DiaryVO> showSelectedDiary(@PathVariable("diaryId") Long diaryId) {
         DiaryVO diary = diaryService.selectDiaryByDiaryId(diaryId);
         return ResponseEntity.ok(diary);
     }
@@ -96,7 +97,7 @@ public class DiaryController {
      * @return : 수정 완료
      */
     @PutMapping("/update/{diaryId}")
-    public ResponseEntity<?> updateDiary(@PathVariable Long diaryId, @RequestBody DiaryVO diary) {
+    public ResponseEntity<?> updateDiary(@PathVariable("diaryId") Long diaryId, @RequestBody DiaryVO diary) {
         if (diaryService.selectDiaryByDiaryId(diaryId) == null) {
             return ResponseEntity.notFound().build();
         }
