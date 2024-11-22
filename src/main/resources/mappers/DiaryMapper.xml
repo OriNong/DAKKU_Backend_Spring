@@ -57,19 +57,19 @@
     </select>
     
     <!-- 일기 저장 -->
-    <insert id="saveDiary" parameterType="DiaryVO" useGeneratedKeys="true" keyProperty="diaryId">
+    <insert id="saveDiary" parameterType="DiaryVO">
         INSERT INTO diarys (
             memberId,
             diaryTitle,
             diaryContent,
-            <!--isPublic,-->
-            weatherIcon
+            isPublic,
+            weather_Icon
         )
         VALUES (
                    #{memberId},
                    #{diaryTitle},
                    #{diaryContent},
-                   <!--#{isPublic},-->
+                   #{isPublic},
                    #{weatherIcon}
                )
     </insert>

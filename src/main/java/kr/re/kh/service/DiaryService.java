@@ -29,22 +29,27 @@ public class DiaryService {
     public List<DiaryVO> selectAllPublicDiary() {
         return diaryMapper.selectAllPublicDiary();
     }
+
     // 일기 저장
     public void saveDiary(DiaryVO diary) {
+        log.info("diary: {}", diary);
         try {
             diaryMapper.saveDiary(diary); // DB 저장
         } catch (Exception e) {
             throw new RuntimeException("일기 저장 실패", e); // 예외 처리
         }
     }
+
     // 일기 고유 id로 일기 조회
     public DiaryVO selectDiaryByDiaryId(Long diaryId) {
         return diaryMapper.selectDiaryWhenUptDiary(diaryId);
     }
+
     // 일기 수정
     public void updateDiary(DiaryVO diary) {
         diaryMapper.updateDiary(diary);
     }
+
     // 일기 삭제
     public void deleteDiary(Long diaryId) {
         diaryMapper.deleteDiary(diaryId);
