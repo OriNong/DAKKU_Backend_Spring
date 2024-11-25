@@ -36,6 +36,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,6 @@ public class UserService {
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
     private final RefreshTokenService refreshTokenService;
-    private final Map<String, Boolean> emailVerificationStatus = new HashMap<>();
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -132,12 +132,6 @@ public class UserService {
         String password = registerRequest.getPassword();
         String name = registerRequest.getName();
 
-        // 1. 이메일 인증 상태 확인
-        Boolean emailVerified = emailVerificationStatus.get(email); // emailVerificationStatus Map에서 이메일 인증 여부 확인
-
-        if (emailVerified == null || !emailVerified) {
-            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
-        }
         // 1. 이메일 유효성 검사
         String emailRegex = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$";
         if (!Pattern.matches(emailRegex, email)){

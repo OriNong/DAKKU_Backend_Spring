@@ -1,6 +1,8 @@
 package kr.re.kh.controller.auth;
 
+import kr.re.kh.model.User;
 import kr.re.kh.model.payload.response.ApiResponse;
+import kr.re.kh.repository.UserRepository;
 import kr.re.kh.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
@@ -20,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MailController {
     private final MailService mailService;
     private final Map<String, Integer> verificationCodes = new ConcurrentHashMap<>();
-    private final Map<String, Boolean> emailVerificationStatus = new HashMap<>();
 
     // 이메일 인증번호 전송.
     // RequestBody로 이메일을 전송후 서버에서 인증번호 메일을 발송한다.
@@ -50,7 +52,6 @@ public class MailController {
         if (storedCode != null && storedCode.equals(code)) { // 해당 인증번호가 비어있지 않은지 storedCode와 code가 동일한지 확인.
             verificationCodes.remove(mail); // 이메일이 정상적으로 확인이 되었다면 기존에 발송한 인증번호는 삭제.
             // 인증이 성공하면 이메일 인증 상태를 true로 업데이트
-            emailVerificationStatus.put(mail, true); // 인증 상태 저장 (예: emailVerificationStatus Map)
 
             return ResponseEntity.ok(new ApiResponse(true, "이메일 인증 완료!")); // 그후 true를 리턴.
         } else {
