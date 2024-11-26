@@ -21,4 +21,11 @@
         AND GREATEST(user_id, friend_id) = GREATEST(#{userID}, #{friendID})
     </select>
 
+    <select id="userRoomCount" parameterType="Long" resultType="string">
+        SELECT ROOM_ID
+        FROM CHATROOMTABLE
+            WHERE USER_ID = #{userID}
+        ORDER BY CREATE_DATE ASC
+    </select>
+
 </mapper>

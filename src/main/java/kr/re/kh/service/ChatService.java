@@ -78,6 +78,10 @@ public class ChatService {
         return result;
     }
 
+    public List<String> userRoomCount(Long userID) {
+        return chatMapper.userRoomCount(userID);
+    }
+
     public List<MessageVO> msgList(ChatMessageCreateCommand chatMessageCreateCommand) {
         return chatMapper.messageSearch(chatMessageCreateCommand.getRoomID());
     }

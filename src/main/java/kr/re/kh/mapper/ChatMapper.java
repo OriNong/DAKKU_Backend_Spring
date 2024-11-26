@@ -14,5 +14,6 @@ public interface ChatMapper {
     void saveMsg(MessageVO messageVO);
     List<MessageVO> messageSearch(String roomID);
     String checkUUID(HashMap<String, Object> map);
+    List<String> userRoomCount(Long userID);
 
 }

@@ -14,11 +14,13 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@RequestMapping("/api")
 @AllArgsConstructor
 public class ChatController {
     private final ChatService chatService;
@@ -52,13 +54,22 @@ public class ChatController {
         return ResponseEntity.ok(chatMessage);
     }
 
-    @GetMapping("/api/chat/uuid")
+    @GetMapping("/chat/uuid")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     public ResponseEntity<?> generateUUID(
             @CurrentUser CustomUserDetails currentUser,
             @RequestParam("friendID") Long friendID
     ) {
         return ResponseEntity.ok(chatService.checkRoom(currentUser, friendID));
+    }
+
+    @GetMapping("/chat/userRoom")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> generateRoom(
+            @CurrentUser CustomUserDetails currentUser
+    ) {
+        log.info(currentUser.toString());
+        return ResponseEntity.ok(chatService.userRoomCount(currentUser.getId()));
     }
 
 }
