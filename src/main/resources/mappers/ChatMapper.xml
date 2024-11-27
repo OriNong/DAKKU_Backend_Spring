@@ -21,11 +21,12 @@
         AND GREATEST(user_id, friend_id) = GREATEST(#{userID}, #{friendID})
     </select>
 
-    <select id="userRoomCount" parameterType="Long" resultType="string">
-        SELECT ROOM_ID
-        FROM CHATROOMTABLE
-            WHERE USER_ID = #{userID}
-        ORDER BY CREATE_DATE ASC
+    <select id="userRoomCount" parameterType="Long" resultType="ChatListVO">
+        SELECT U.USERNAME, U2.USERNAME AS FRIENDNAME, C.ROOM_ID FROM USERS u
+        INNER JOIN CHATROOMTABLE c ON U.USER_ID = C.USER_ID
+        INNER JOIN USERS u2 ON U2.USER_ID = C.FRIEND_ID
+        WHERE U.USER_ID = #{userID}
+        ORDER BY c.CREATE_DATE ASC
     </select>
 
 </mapper>

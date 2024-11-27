@@ -3,6 +3,7 @@ package kr.re.kh.service;
 import kr.re.kh.mapper.ChatMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.ChatMessageCreateCommand;
+import kr.re.kh.model.vo.ChatListVO;
 import kr.re.kh.model.vo.MessageVO;
 import kr.re.kh.model.vo.RoomVO;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,7 @@ public class ChatService {
         return result;
     }
 
-    public List<String> userRoomCount(Long userID) {
+    public List<ChatListVO> userRoomCount(Long userID) {
         return chatMapper.userRoomCount(userID);
     }
 
