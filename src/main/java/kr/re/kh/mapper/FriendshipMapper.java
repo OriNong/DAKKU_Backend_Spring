@@ -22,4 +22,7 @@ public interface FriendshipMapper {
 
     // 친구 수락 및 거절 시 상태 변경
     void changeFriendshipStatus(FriendshipVO friendShip);
+
+    // 친구 Accept 목록
+    List<FriendshipVO> getFriendshipList(Long userId);
 }

@@ -3,12 +3,16 @@ package kr.re.kh.controller.auth;
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.model.CustomUserDetails;
+import kr.re.kh.model.vo.FriendshipVO;
 import kr.re.kh.service.FriendshipService;
 import kr.re.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/social")
@@ -71,4 +75,23 @@ public class FriendshipController {
     public ResponseEntity<?> rejectFriendshipRequest(@PathVariable("friendshipId") Long friendshipId){
         return friendshipService.rejectFriendshipRequest(friendshipId);
     }
+
+    /**
+     * 친구 목록 조회
+     * @param userId
+     * @return
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getFriendshipList(@PathVariable Long userId){
+        List<FriendshipVO> friendships = friendshipService.getFriendshipList(userId);
+
+        if (friendships.isEmpty()){
+        // 친구 목록이 없으면 404 Not Found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            // 친구 목록이 있으면 200 ok와 함께 목록 반환
+            return new ResponseEntity<>(friendships, HttpStatus.OK);
+        }
+    }
+
 }

@@ -76,4 +76,13 @@
         WHERE USER_ID = #{userId} AND FRIEND_ID = #{friendId}
     </update>
 
+    <!-- User의 친구 목록 조회 -->
+    <select id="getFriendshipList" parameterType="long" resultType="String">
+        SELECT u.USERNAME
+        FROM FRIEND_SHIP f
+        JOIN USERS u ON f.FRIEND_ID = u.USER_ID
+        WHERE f.USER_ID = #{userId}
+        AND f.STATUS = 'ACCEPT'
+    </select>
+
 </mapper>

@@ -171,4 +171,15 @@ public class FriendshipService {
         }
         return new ResponseEntity<>("친구 요청이 거절되었습니다.", HttpStatus.OK);
     }
+
+    /**
+     * accept 친구 목록 조회
+     * @param userId
+     * @return
+     */
+    public List<FriendshipVO> getFriendshipList(Long userId){
+        return friendshipMapper.getFriendshipList(userId);
+    }
+
+
 }
