@@ -46,12 +46,15 @@ public class ChatController {
         sseService.sendToUI("채팅 알림", chatMessageRequest.getUserID()); // Sse를 이용해서 사용자에게 채팅 알림이 왔다고 전달.
         chatService.saveMsg(chatMessageCreateCommand);
 
-        // title, text를 반환 해서 넣어주어야됨.
-        // title는 보낸 유저 Name을 넣어주어야 한다. Mapper를 수정해서 Name을 반환하게 수정해줘야한다.
+        // 현 프로젝트 틀.
         HashMap<String, Object> result= new HashMap<>();
         result.put("text", chatMessageRequest.getText());
-//        result.put("title", chatMessageRequest.get);
+        result.put("title", chatMessageRequest.getFriendName());
+        result.put("roomId", chatMessageRequest.getRoomId());
+        result.put("friendID", chatMessageRequest.getFriendID());
+        result.put("userID", chatMessageRequest.getUserID());
 
+        // layout 예제 전용 틀.
 //        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
 //                .text(chatMessageRequest.getText())
 //                .userID(chatMessageRequest.getUserID())
