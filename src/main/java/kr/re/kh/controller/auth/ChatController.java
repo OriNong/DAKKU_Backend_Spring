@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @Slf4j
 @RequestMapping("/api")
@@ -44,14 +46,20 @@ public class ChatController {
         sseService.sendToUI("채팅 알림", chatMessageRequest.getUserID()); // Sse를 이용해서 사용자에게 채팅 알림이 왔다고 전달.
         chatService.saveMsg(chatMessageCreateCommand);
 
-        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
-                .text(chatMessageRequest.getText())
-                .userID(chatMessageRequest.getUserID())
-                .roomId(chatMessageRequest.getRoomId())
-                .friendID(chatMessageRequest.getFriendID())
-                .build();
+        // title, text를 반환 해서 넣어주어야됨.
+        // title는 보낸 유저 Name을 넣어주어야 한다. Mapper를 수정해서 Name을 반환하게 수정해줘야한다.
+        HashMap<String, Object> result= new HashMap<>();
+        result.put("text", chatMessageRequest.getText());
+//        result.put("title", chatMessageRequest.get);
 
-        return ResponseEntity.ok(chatMessage);
+//        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
+//                .text(chatMessageRequest.getText())
+//                .userID(chatMessageRequest.getUserID())
+//                .roomId(chatMessageRequest.getRoomId())
+//                .friendID(chatMessageRequest.getFriendID())
+//                .build();
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/chat/uuid")
