@@ -22,10 +22,15 @@
     </select>
 
     <select id="userRoomCount" parameterType="Long" resultType="ChatListVO">
-        SELECT U.USERNAME, U2.USERNAME AS FRIENDNAME, C.ROOM_ID FROM USERS u
+        SELECT CASE WHEN U.USER_ID = #{userID} THEN 1 ELSE 0 END AS ME,
+        CASE WHEN U2.USER_ID = #{userID} THEN U2.USERNAME ELSE U.USERNAME END AS USERNAME,
+        CASE WHEN U2.USER_ID = #{userID} THEN U.USERNAME ELSE U2.USERNAME END AS FRIENDNAME,
+        C.FRIEND_ID,
+        C.ROOM_ID
+        FROM USERS u
         INNER JOIN CHATROOMTABLE c ON U.USER_ID = C.USER_ID
         INNER JOIN USERS u2 ON U2.USER_ID = C.FRIEND_ID
-        WHERE U.USER_ID = #{userID}
+        WHERE U.USER_ID = #{userID} OR C.FRIEND_ID = #{userID}
         ORDER BY c.CREATE_DATE ASC
     </select>
 
