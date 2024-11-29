@@ -51,6 +51,7 @@ public class ChatController {
         result.put("text", chatMessageRequest.getText());
         result.put("title", chatMessageRequest.getFriendName());
         result.put("roomId", chatMessageRequest.getRoomId());
+        result.put("userName", chatMessageRequest.getUserName());
         result.put("friendID", chatMessageRequest.getFriendID());
         result.put("userID", chatMessageRequest.getUserID());
 
