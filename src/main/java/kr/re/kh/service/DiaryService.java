@@ -4,9 +4,12 @@ import kr.re.kh.mapper.DiaryMapper;
 import kr.re.kh.model.vo.DiaryVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -23,6 +26,16 @@ public class DiaryService {
     // 개별 사용자의 공개로 게시된 일기 조회
     public List<DiaryVO> selectAllPublicDiaryByMemberId(Long memberId) {
         return diaryMapper.selectPublicDiaryByMemberId(memberId);
+    }
+
+    // 로그인 사용자의 일기를 특정 날짜를 기준으로 조회
+    public List<DiaryVO> selectUserDiaryByDate(Long memberId, String selectedDate) {
+        Map<String, Object> userIdAndDate = new HashMap<>();
+        userIdAndDate.put("memberId", memberId);
+        userIdAndDate.put("selectedDate", selectedDate);
+        List<DiaryVO> diariesInSelectedDate = diaryMapper.selectUserDiaryByDate(userIdAndDate);
+
+        return diariesInSelectedDate;
     }
 
     // 공개로 게시된 전체 일기 조회
