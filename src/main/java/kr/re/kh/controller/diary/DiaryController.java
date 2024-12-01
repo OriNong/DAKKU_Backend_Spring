@@ -2,6 +2,7 @@ package kr.re.kh.controller.diary;
 
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.model.CustomUserDetails;
+import kr.re.kh.model.User;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.DiaryVO;
 import kr.re.kh.service.DiaryService;
@@ -13,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/diary")
@@ -47,6 +50,20 @@ public class DiaryController {
     public ResponseEntity<List<DiaryVO>> showMemberDiary(@PathVariable("memberId") Long memberId) {
         List<DiaryVO> memberPublicDiaries = diaryService.selectAllPublicDiaryByMemberId(memberId);
         return ResponseEntity.ok(memberPublicDiaries);
+    }
+
+    /**
+     * 로그인 사용자의 일기를 특정 날짜를 기준으로 조회
+     * @param currentUser : 로그인 사용자
+     * @param selectedDate : 선택된 날짜 (yyyy-MM-dd 형식의 문자열)
+     * @return
+     */
+    @GetMapping("/myDiaries/date/{selectedDate}")
+    public ResponseEntity<List<DiaryVO>> showMyDiaryByDate(@CurrentUser CustomUserDetails currentUser ,@PathVariable("selectedDate") String selectedDate) {
+        Long memberId = currentUser.getId();
+
+        // List null 체크를 하지않고 클라이언트로 전달 -> 클라이언트에서 null에 대한 처리 수행
+        return ResponseEntity.ok(diaryService.selectUserDiaryByDate(memberId, selectedDate));
     }
 
     /**

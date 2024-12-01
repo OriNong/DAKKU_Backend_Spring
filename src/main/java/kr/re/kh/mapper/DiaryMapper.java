@@ -4,6 +4,7 @@ import kr.re.kh.model.vo.DiaryVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DiaryMapper {
@@ -12,6 +13,9 @@ public interface DiaryMapper {
 
     // 개별 사용자의 공개로 게시된 일기 조회
     List<DiaryVO> selectPublicDiaryByMemberId(Long memberId);
+
+    // 로그인 사용자의 일기를 특정 날짜를 기준으로 조회
+    List<DiaryVO> selectUserDiaryByDate(Map<String, Object> userIdAndDate);
 
     // 공개로 게시된 일기 조회
     List<DiaryVO> selectAllPublicDiary();
