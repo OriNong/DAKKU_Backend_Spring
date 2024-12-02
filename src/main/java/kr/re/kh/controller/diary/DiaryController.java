@@ -48,6 +48,8 @@ public class DiaryController {
         return ResponseEntity.ok(myDiaries);
     }
 
+    // 일기 isPublic Update 로직 작성
+
     /**
      * 특정 사용자의 공개로 게시된 일기 조회
      * @param memberId : 특정 사용자의 memberId
@@ -128,6 +130,17 @@ public class DiaryController {
         diary.setDiaryId(diaryId);
         diaryService.updateDiary(diary);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{diaryId}")
+    public ResponseEntity<?> deleteDiary(@PathVariable("diaryId") Long diaryId) {
+        try {
+            diaryService.deleteDiary(diaryId);
+            return ResponseEntity.ok(new ApiResponse(true, "일기 삭제 성공"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "일기 삭제 중 오류 발생"));
+        }
     }
 
 

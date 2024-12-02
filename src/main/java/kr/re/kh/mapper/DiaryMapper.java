@@ -30,5 +30,5 @@ public interface DiaryMapper {
     void updateDiary(DiaryVO diary);
 
     // 일기 삭제
-    void deleteDiary(Long diaryId);
+    void deleteDiaryById(Long diaryId);
 }

@@ -4,7 +4,6 @@ import kr.re.kh.mapper.DiaryMapper;
 import kr.re.kh.model.vo.DiaryVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -65,6 +64,6 @@ public class DiaryService {
 
     // 일기 삭제
     public void deleteDiary(Long diaryId) {
-        diaryMapper.deleteDiary(diaryId);
+        diaryMapper.deleteDiaryById(diaryId);
     }
 }

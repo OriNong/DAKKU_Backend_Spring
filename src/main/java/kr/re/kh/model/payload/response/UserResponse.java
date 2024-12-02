@@ -22,7 +22,7 @@ public class UserResponse {
     private String name;
     // friendship List 필드로 추가
 
-    public UserResponse(String username, String email, Set<Role> roles, Long id) {
+    public UserResponse(String username, String email, Set<Role> roles, Long id, String name) {
         this.username = username;
         this.email = email;
         this.roles = roles;
