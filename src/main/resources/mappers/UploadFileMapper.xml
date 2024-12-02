@@ -160,4 +160,12 @@
         DELETE FROM PROFILE_IMG_MAP WHERE USER_ID = #{userId}
     </delete>
 
+    <!-- 전체 사용자 이미지 조회-->
+    <select id="getUserProfileImage" resultType="UserProfile">
+        SELECT C.SAVE_FILE_NAME, A.USERNAME FROM USERS A
+        LEFT OUTER JOIN PROFILE_IMG_MAP B ON A.USER_ID = B.USER_ID
+        LEFT OUTER JOIN UPLOAD_FILE C ON B.FILE_ID = C.ID
+
+    </select>
+
 </mapper>

@@ -16,6 +16,7 @@ package kr.re.kh.service;
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.exception.UserLogoutException;
+import kr.re.kh.mapper.UploadFileMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.Role;
 import kr.re.kh.model.User;
@@ -26,6 +27,7 @@ import kr.re.kh.model.payload.request.UserRegisterRequest;
 import kr.re.kh.model.payload.response.PagedResponse;
 import kr.re.kh.model.payload.response.UserListResponse;
 import kr.re.kh.model.payload.response.UserResponse;
+import kr.re.kh.model.vo.UserProfile;
 import kr.re.kh.repository.UserRepository;
 import kr.re.kh.util.ModelMapper;
 import kr.re.kh.util.Util;
@@ -53,6 +55,7 @@ public class UserService {
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
     private final RefreshTokenService refreshTokenService;
+    private final UploadFileMapper uploadFileMapper;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -403,6 +406,11 @@ public class UserService {
             responseMap.put("message", "계정이 없습니다.");
         }
         return responseMap;
+    }
+
+    // 전체 사용자 이미지와 함께 조회
+    public List<UserProfile> getUserProfiles(){
+        return uploadFileMapper.getUserProfileImage();
     }
 
 
