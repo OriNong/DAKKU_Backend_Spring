@@ -6,6 +6,7 @@ import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.LogOutRequest;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.payload.response.UserResponse;
+import kr.re.kh.model.vo.UserProfile;
 import kr.re.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -75,6 +77,17 @@ public class UserController {
         Map<String, Object> response = userService.changePW(username, email); // userService로 결과 받기
         // 결과를 ResponseEntity로 반환
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 전체 사용자 이미지와 함께 조회
+     * @return
+     */
+    @GetMapping("/profiles")
+    public ResponseEntity<List<UserProfile>> getUserProfiles(){
+        List<UserProfile> userProfiles = userService.getUserProfiles();
+
+        return ResponseEntity.ok(userProfiles);
     }
 
 }

@@ -1,6 +1,7 @@
 package kr.re.kh.mapper;
 
 import kr.re.kh.model.vo.UploadFile;
+import kr.re.kh.model.vo.UserProfile;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -34,5 +35,8 @@ public interface UploadFileMapper {
     void insertProfileImgMap(HashMap<String, Object> map);
 
     void deleteProfileImgMap(Long userId);
+
+    // 전체 사용자 이미지와 리스트 조회
+    List<UserProfile> getUserProfileImage();
 
 }
