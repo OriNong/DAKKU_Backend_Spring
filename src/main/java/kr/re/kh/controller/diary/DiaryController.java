@@ -30,14 +30,21 @@ public class DiaryController {
     private WeatherIconService weatherService;
 
     /**
-     * 로그인한 사용자의 일기 목록
+     * 로그인한 사용자의 일기 목록을 가장 최근에 작성한 일기부터 조회
      * @param currentUser : 로그인 사용자
-     * @return
+     * @return : List<DiaryVO> myDiaries
      */
     @GetMapping("/myDiaries")
     public ResponseEntity<List<DiaryVO>> showMyDiary(@CurrentUser CustomUserDetails currentUser) {
         Long memberId = currentUser.getId();
         List<DiaryVO> myDiaries = diaryService.selectAllDiaryByMemberId(memberId);
+        int i = 1;
+        for (DiaryVO diaryVO : myDiaries) {
+            log.info(i + "번째 일기 정보");
+            log.info(diaryVO.toString());
+            log.info("=======================");
+            i++;
+        }
         return ResponseEntity.ok(myDiaries);
     }
 
