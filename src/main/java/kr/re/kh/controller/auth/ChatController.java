@@ -80,8 +80,6 @@ public class ChatController {
     public ResponseEntity<?> generateRoom(
             @CurrentUser CustomUserDetails currentUser
     ) {
-        log.info(currentUser.toString());
         return ResponseEntity.ok(chatService.userRoomCount(currentUser.getId()));
     }
-
 }

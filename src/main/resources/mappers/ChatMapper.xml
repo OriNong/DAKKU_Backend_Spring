@@ -23,17 +23,29 @@
 
     <select id="userRoomCount" parameterType="Long" resultType="ChatListVO">
         SELECT
-        A.ROOM_ID
-        , CASE WHEN A.USER_ID = #{userID} THEN A.FRIEND_ID ELSE A.USER_ID END AS FRIEND_ID
-        , CASE WHEN A.USER_ID = #{userID} THEN B2.USERNAME ELSE B.USERNAME END AS FRIENDNAME
-        , CASE WHEN A.USER_ID = #{userID} THEN A.USER_ID ELSE A.FRIEND_ID END AS USER_ID
-        , CASE WHEN A.USER_ID = #{userID} THEN B.USERNAME ELSE B2.USERNAME END AS USERNAME
-        , A.CREATE_DATE
-        , CASE WHEN A.USER_ID = #{userID} THEN 1 ELSE 0 END AS ME
+            A.ROOM_ID
+            , CASE WHEN A.USER_ID = #{userID} THEN A.FRIEND_ID ELSE A.USER_ID END AS FRIEND_ID
+            , CASE WHEN A.USER_ID = #{userID} THEN B2.USERNAME ELSE B.USERNAME END AS FRIENDNAME
+            , CASE WHEN A.USER_ID = #{userID} THEN A.USER_ID ELSE A.FRIEND_ID END AS USER_ID
+            , CASE WHEN A.USER_ID = #{userID} THEN B.USERNAME ELSE B2.USERNAME END AS USERNAME
+            , COALESCE(LAST_MSG.MESSAGE, '') AS LAST_MESSAGE
+            , A.CREATE_DATE
+            , CASE WHEN A.USER_ID = #{userID} THEN 1 ELSE 0 END AS ME
         FROM CHATROOMTABLE A
-        INNER JOIN USERS B ON A.USER_ID = B.USER_ID
-        INNER JOIN USERS B2 ON A.FRIEND_ID = B2.USER_ID
-        WHERE A.USER_ID = #{userID} OR A.FRIEND_ID = #{userID}
+            INNER JOIN USERS B ON A.USER_ID = B.USER_ID
+            INNER JOIN USERS B2 ON A.FRIEND_ID = B2.USER_ID
+            LEFT OUTER JOIN (
+                SELECT
+                    C2.ROOM_ID,
+                    C2.MESSAGE
+                FROM CHATMESSAGETABLE C2
+                    WHERE (C2.ROOM_ID, C2.INPUT_DATE) IN (
+                        SELECT ROOM_ID, MAX(INPUT_DATE)
+                        FROM CHATMESSAGETABLE
+                        GROUP BY ROOM_ID
+                    )
+            ) LAST_MSG ON LAST_MSG.ROOM_ID = A.ROOM_ID
+            WHERE A.USER_ID = #{userID} OR A.FRIEND_ID = #{userID}
         ORDER BY A.CREATE_DATE ASC
     </select>
 

@@ -44,7 +44,7 @@
     </update>
 
     <!-- User의 친구 관계 목록 조회 -->
-    <select id="findFriendshipListByUserId" parameterType="long" resultType="FriendshipVO">
+    <select id="findFriendshipListByUserId" parameterType="Long" resultType="FriendshipVO">
         SELECT
             ID as id,
             USER_ID as userId,
@@ -77,11 +77,14 @@
     </update>
 
     <!-- User의 친구 목록 조회 -->
-    <select id="getFriendshipList" parameterType="long" resultType="String">
-        SELECT u.USERNAME
+    <select id="getFriendshipList" parameterType="Long" resultType="HashMap">
+        SELECT
+            u.USERNAME AS FRIEND_NAME
+            , u.USER_ID AS FRIEND_ID
+            , f.ID
         FROM FRIEND_SHIP f
-        JOIN USERS u ON f.FRIEND_ID = u.USER_ID
-        WHERE f.USER_ID = #{userId}
+            JOIN USERS u ON f.FRIEND_ID = u.USER_ID
+            WHERE f.USER_ID = #{userID}
         AND f.STATUS = 'ACCEPT'
     </select>
 

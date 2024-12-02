@@ -53,8 +53,8 @@ public class ChatService {
 
         requestMap.put("userID", currentUser.getId());
         requestMap.put("friendID", friendID);
-        String resultUUID = chatMapper.checkUUID(requestMap);
 
+        String resultUUID = chatMapper.checkUUID(requestMap);
         if (StringUtils.isEmpty(resultUUID)) {
             String uuid = UUID.randomUUID().toString();
             RoomVO roomVO = RoomVO.builder()
@@ -72,7 +72,6 @@ public class ChatService {
             List<MessageVO> msgList = msgList(chatMessageCreateCommand);
             result.put("list", msgList);
         }
-
         result.put("userID", currentUser.getId());
         result.put("friendID", friendID);
 
@@ -86,4 +85,5 @@ public class ChatService {
     public List<MessageVO> msgList(ChatMessageCreateCommand chatMessageCreateCommand) {
         return chatMapper.messageSearch(chatMessageCreateCommand.getRoomID());
     }
+
 }
