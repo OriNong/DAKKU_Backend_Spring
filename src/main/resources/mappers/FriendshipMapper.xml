@@ -92,6 +92,8 @@
         SELECT
         A.USERNAME
         , COALESCE(C.FILE_PATH, 'NO IMG') AS IMG_PATH
+        , A.NAME
+        , A.EMAIL
         FROM USERS A
         LEFT JOIN UPLOAD_FILE C ON A.USER_ID = CAST(C.USERNAME AS NUMBER)
         WHERE A.USER_ID = #{userId}

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -179,12 +180,22 @@ public class FriendshipService {
         return friendshipMapper.getFriendshipList(userId);
     }
 
+    /**
+     * 나자신을 조회
+     * @param userId
+     * @return
+     */
     public HashMap<String, Object> getMeProFiles(Long userId) {
         HashMap<String, Object> result = friendshipMapper.meProfiles(userId);
         List<FriendshipVO> friendship = getFriendshipList(userId);
+        log.info(result.toString());
 
         result.put("friendShipList", friendship);
         return result;
+    }
+
+    public ResponseEntity<?> proFilesCorrection() {
+        return ResponseEntity.ok("okay");
     }
 
 }
