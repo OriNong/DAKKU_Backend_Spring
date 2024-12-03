@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -181,5 +179,12 @@ public class FriendshipService {
         return friendshipMapper.getFriendshipList(userId);
     }
 
+    public HashMap<String, Object> getMeProFiles(Long userId) {
+        HashMap<String, Object> result = friendshipMapper.meProfiles(userId);
+        List<FriendshipVO> friendship = getFriendshipList(userId);
+
+        result.put("friendShipList", friendship);
+        return result;
+    }
 
 }

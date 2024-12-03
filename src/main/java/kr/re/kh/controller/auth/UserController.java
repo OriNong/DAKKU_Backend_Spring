@@ -86,6 +86,7 @@ public class UserController {
     @GetMapping("/profiles")
     public ResponseEntity<List<UserProfile>> getUserProfiles(){
         List<UserProfile> userProfiles = userService.getUserProfiles();
+        log.info(userProfiles.toString());
 
         return ResponseEntity.ok(userProfiles);
     }

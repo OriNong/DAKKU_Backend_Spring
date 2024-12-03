@@ -3,6 +3,7 @@ package kr.re.kh.mapper;
 import kr.re.kh.model.vo.FriendshipVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,7 @@ public interface FriendshipMapper {
 
     // 친구 Accept 목록
     List<FriendshipVO> getFriendshipList(Long userId);
+
+    // 나 자신과 친구를 조회
+    HashMap<String, Object> meProfiles(Long userId);
 }

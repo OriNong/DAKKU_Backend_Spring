@@ -88,4 +88,13 @@
         AND f.STATUS = 'ACCEPT'
     </select>
 
+    <select id="meProfiles" parameterType="Long" resultType="HashMap">
+        SELECT
+        A.USERNAME
+        , COALESCE(C.FILE_PATH, 'NO IMG') AS IMG_PATH
+        FROM USERS A
+        LEFT JOIN UPLOAD_FILE C ON A.USER_ID = CAST(C.USERNAME AS NUMBER)
+        WHERE A.USER_ID = #{userId}
+    </select>
+
 </mapper>

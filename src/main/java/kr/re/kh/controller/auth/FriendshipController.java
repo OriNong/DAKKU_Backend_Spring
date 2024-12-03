@@ -90,4 +90,14 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipService.getFriendshipList(userID));
     }
 
+    /**
+     * 나 자신의 프로필 검색
+     * @return
+     */
+    @GetMapping("/meProFiles")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> meProfiles(@RequestParam("userId") Long userId) {
+        return ResponseEntity.ok(friendshipService.getMeProFiles(userId));
+    }
+
 }

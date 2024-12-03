@@ -49,11 +49,6 @@ public class User extends DateAudit {
     @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
     private Boolean isEmailVerified;
 
-//    // 프로필 이미지 컬럼
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "PROFILE_IMAGE_ID")
-//    private UploadFile profileImage;
-
     public User() {
         super();
     }
