@@ -91,7 +91,7 @@
     <select id="meProfiles" parameterType="Long" resultType="HashMap">
         SELECT
         A.USERNAME
-        , COALESCE(C.FILE_PATH, 'NO IMG') AS IMG_PATH
+        , COALESCE(C.SAVE_FILE_NAME, 'NO IMG') AS IMG_PATH
         , A.NAME
         , A.EMAIL
         FROM USERS A
