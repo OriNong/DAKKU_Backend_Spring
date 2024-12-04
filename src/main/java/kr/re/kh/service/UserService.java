@@ -413,5 +413,9 @@ public class UserService {
         return uploadFileMapper.getUserProfileImage();
     }
 
-
+    // username으로 사용자 조회
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.orElse(null); // 사용자 없으면 null 반환
+    }
 }
