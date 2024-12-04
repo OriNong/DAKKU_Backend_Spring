@@ -87,10 +87,7 @@ public class UserController {
      */
     @GetMapping("/profiles")
     public ResponseEntity<List<UserProfile>> getUserProfiles(){
-        List<UserProfile> userProfiles = userService.getUserProfiles();
-        log.info(userProfiles.toString());
-
-        return ResponseEntity.ok(userProfiles);
+        return ResponseEntity.ok(userService.getUserProfiles());
     }
     // 특정 사용자 정보 조회
     @GetMapping("/{username}")

@@ -5,10 +5,12 @@ import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.FriendshipVO;
+import kr.re.kh.model.vo.UserInfoApplyVO;
 import kr.re.kh.service.FriendshipService;
 import kr.re.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -98,6 +100,30 @@ public class FriendshipController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     public ResponseEntity<?> meProfiles(@RequestParam("userId") Long userId) {
         return ResponseEntity.ok(friendshipService.getMeProFiles(userId));
+    }
+
+    /**
+     * 사용자 정보를 수정.
+     * @param userInfoApplyVO
+     * @return
+     */
+    @PostMapping("/userInfoApply")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> userInfoApply(@RequestBody UserInfoApplyVO userInfoApplyVO) {
+        return ResponseEntity.ok(friendshipService.userInfoModify(userInfoApplyVO));
+    }
+
+    /**
+     * 유저 삭제
+     * @param customUser
+     * @return
+     */
+    @PostMapping("/userDelete")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> userDelete(
+            @CurrentUser CustomUserDetails customUser
+    ) {
+        return ResponseEntity.ok(friendshipService.userDelete(customUser.getId()));
     }
 
 }

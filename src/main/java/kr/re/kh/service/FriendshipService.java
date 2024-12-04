@@ -4,24 +4,28 @@ import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.mapper.FriendshipMapper;
 import kr.re.kh.model.FriendshipStatus;
 import kr.re.kh.model.User;
+import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.vo.FriendshipVO;
 import kr.re.kh.model.payload.response.WaitingFriendListResponse;
+import kr.re.kh.model.vo.UserInfoApplyVO;
 import kr.re.kh.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class FriendshipService {
-
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final FriendshipMapper friendshipMapper;
 
@@ -188,14 +192,51 @@ public class FriendshipService {
     public HashMap<String, Object> getMeProFiles(Long userId) {
         HashMap<String, Object> result = friendshipMapper.meProfiles(userId);
         List<FriendshipVO> friendship = getFriendshipList(userId);
-        log.info(result.toString());
-
         result.put("friendShipList", friendship);
         return result;
     }
 
-    public ResponseEntity<?> proFilesCorrection() {
-        return ResponseEntity.ok("okay");
+    public ResponseEntity<?> userInfoModify(UserInfoApplyVO userInfoApplyVO) {
+        final String pwdReg = "^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$";
+
+
+        if (userInfoApplyVO.getUserId() == null || userInfoApplyVO.getUserId().equals(0L)) {
+            return ResponseEntity.ok(new ApiResponse(false, "유저의 아이디값이 없습니다."));
+        }
+
+
+        if (!userInfoApplyVO.getPassword().isEmpty()) {
+            if (!userInfoApplyVO.getPassword().matches(pwdReg)) {
+                return ResponseEntity.ok(new ApiResponse(false, "비밀번호 정규식이 맞지 않습니다."));
+            }
+
+            if (!userInfoApplyVO.getPassword().equals(userInfoApplyVO.getPasswordChk())) {
+                return ResponseEntity.ok(new ApiResponse(false, "비밀번호가 서로 맞지 않습니다."));
+            }
+
+            UserInfoApplyVO userInfoApplyVOResultIsPwd = UserInfoApplyVO.builder()
+                    .name(userInfoApplyVO.getName())
+                    .password(passwordEncoder.encode(userInfoApplyVO.getPassword()))
+                    .userId(userInfoApplyVO.getUserId())
+                    .build();
+
+            friendshipMapper.userInfoApply(userInfoApplyVOResultIsPwd);
+            return ResponseEntity.ok(new ApiResponse(true,"정보가 수정되었습니다."));
+        }
+
+        UserInfoApplyVO userInfoApplyVOResult = UserInfoApplyVO.builder()
+                .name(userInfoApplyVO.getName())
+                .password(null)
+                .userId(userInfoApplyVO.getUserId())
+                .build();
+
+        friendshipMapper.userInfoApply(userInfoApplyVOResult);
+        return ResponseEntity.ok(new ApiResponse(true, "정보가 수정되었습니다."));
+    }
+
+    public ResponseEntity<?> userDelete(Long userId) {
+        friendshipMapper.userDelete(userId);
+        return ResponseEntity.ok(new ApiResponse(true, "정상 처리되었습니다."));
     }
 
 }

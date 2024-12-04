@@ -1,6 +1,7 @@
 package kr.re.kh.mapper;
 
 import kr.re.kh.model.vo.FriendshipVO;
+import kr.re.kh.model.vo.UserInfoApplyVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -29,4 +30,10 @@ public interface FriendshipMapper {
 
     // 나 자신과 친구를 조회
     HashMap<String, Object> meProfiles(Long userId);
+
+    // 사용자 정보 변경
+    void userInfoApply(UserInfoApplyVO userInfoApplyVO);
+
+    // 계정 삭제 절차.
+    void userDelete(Long userId);
 }
