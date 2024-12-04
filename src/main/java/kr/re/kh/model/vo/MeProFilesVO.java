@@ -14,5 +14,7 @@ import java.util.List;
 public class MeProFilesVO {
     private String userName;
     private String proFileImg;
+    private String email;
+    private String name;
     private List<FriendshipVO> friendshipList;
 }

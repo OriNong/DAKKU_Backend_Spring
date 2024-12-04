@@ -3,6 +3,7 @@ package kr.re.kh.controller.auth;
 import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.event.OnUserLogoutSuccessEvent;
 import kr.re.kh.model.CustomUserDetails;
+import kr.re.kh.model.User;
 import kr.re.kh.model.payload.request.LogOutRequest;
 import kr.re.kh.model.payload.response.ApiResponse;
 import kr.re.kh.model.payload.response.UserResponse;
@@ -11,6 +12,7 @@ import kr.re.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,10 +87,17 @@ public class UserController {
      */
     @GetMapping("/profiles")
     public ResponseEntity<List<UserProfile>> getUserProfiles(){
-        List<UserProfile> userProfiles = userService.getUserProfiles();
-        log.info(userProfiles.toString());
-
-        return ResponseEntity.ok(userProfiles);
+        return ResponseEntity.ok(userService.getUserProfiles());
+    }
+    // 특정 사용자 정보 조회
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+        if (user != null) {
+            return ResponseEntity.ok(user); // User 엔티티 반환
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
     }
 
 }

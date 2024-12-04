@@ -91,10 +91,30 @@
     <select id="meProfiles" parameterType="Long" resultType="HashMap">
         SELECT
         A.USERNAME
-        , COALESCE(C.FILE_PATH, 'NO IMG') AS IMG_PATH
+        , COALESCE(C.SAVE_FILE_NAME, 'NO IMG') AS IMG_PATH
+        , A.NAME
+        , A.EMAIL
         FROM USERS A
         LEFT JOIN UPLOAD_FILE C ON A.USER_ID = CAST(C.USERNAME AS NUMBER)
         WHERE A.USER_ID = #{userId}
     </select>
+
+    <update id="userInfoApply" parameterType="UserInfoApplyVO">
+        UPDATE USERS
+        SET
+        NAME = #{name}
+        <if test="password != null and password != ''">
+            , PASSWORD = #{password}
+        </if>
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="userDelete" parameterType="Long">
+        UPDATE USERS
+        SET
+        IS_EMAIL_VERIFIED = 0,
+        IS_ACTIVE = 0
+        WHERE USER_ID = #{userId}
+    </update>
 
 </mapper>
