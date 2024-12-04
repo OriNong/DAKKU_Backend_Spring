@@ -118,7 +118,6 @@
             diaryContent = #{diaryContent},
             isPublic = #{isPublic}
         WHERE diaryId = #{diaryId}
-        AND memberId = #{memberId}
     </update>
 
     <!-- 일기 삭제 -->

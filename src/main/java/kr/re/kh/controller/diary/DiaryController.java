@@ -127,6 +127,7 @@ public class DiaryController {
         if (diaryService.selectDiaryByDiaryId(diaryId) == null) {
             return ResponseEntity.notFound().build();
         }
+        log.info(diary.toString());
         diary.setDiaryId(diaryId);
         diaryService.updateDiary(diary);
         return ResponseEntity.ok().build();
