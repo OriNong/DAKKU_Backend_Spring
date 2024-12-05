@@ -92,12 +92,7 @@ public class UserController {
     // 특정 사용자 정보 조회
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
-        User user = userService.getUserByUsername(username);
-        if (user != null) {
-            return ResponseEntity.ok(user); // User 엔티티 반환
-        } else {
-            return ResponseEntity.status(404).body("User not found");
-        }
+        return ResponseEntity.ok(userService.getUserByUsername(username)); //
     }
 
 }

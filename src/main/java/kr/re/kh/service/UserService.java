@@ -17,6 +17,7 @@ import kr.re.kh.annotation.CurrentUser;
 import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.exception.UserLogoutException;
 import kr.re.kh.mapper.UploadFileMapper;
+import kr.re.kh.mapper.UsersMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.Role;
 import kr.re.kh.model.User;
@@ -56,6 +57,7 @@ public class UserService {
     private final UserDeviceService userDeviceService;
     private final RefreshTokenService refreshTokenService;
     private final UploadFileMapper uploadFileMapper;
+    private final UsersMapper usersMapper;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -414,8 +416,10 @@ public class UserService {
     }
 
     // username으로 사용자 조회
-    public User getUserByUsername(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        return userOptional.orElse(null); // 사용자 없으면 null 반환
+    public HashMap<String, Object> getUserByUsername(String username) {
+
+
+        // Optional<User> userOptional = userRepository.findByUsername(username);
+        return usersMapper.selectFileNameByUsername(username);
     }
 }

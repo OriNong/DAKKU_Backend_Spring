@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.kh.mapper.UsersMapper">
+
+    <select id="selectFileNameByUsername" parameterType="String" resultType="HashMap">
+
+        SELECT A.USER_ID AS userId, C.SAVE_FILE_NAME AS saveFileName, A.NAME, A.USERNAME FROM USERS A
+        LEFT OUTER JOIN PROFILE_IMG_MAP B ON A.USER_ID = B.USER_ID
+        LEFT OUTER JOIN FILES C ON B.FILE_ID = C.FILE_ID
+        WHERE A.USERNAME = #{username}
+    </select>
+
+</mapper>

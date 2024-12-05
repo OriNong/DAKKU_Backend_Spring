@@ -56,8 +56,6 @@ public class UserProfileController {
             return ResponseEntity.ok(new ApiResponse(false, "이미지가 없습니다."));
         }
 
-
-
     }
     // 사용자 프로필 이미지 삭제
     @DeleteMapping("/ProfileImage")
