@@ -1,6 +1,7 @@
 package kr.re.kh.controller.diary;
 
 import kr.re.kh.annotation.CurrentUser;
+import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.User;
 import kr.re.kh.model.payload.response.ApiResponse;
@@ -31,6 +32,7 @@ public class DiaryController {
 
     /**
      * 로그인한 사용자의 일기 목록을 가장 최근에 작성한 일기부터 조회
+     *
      * @param currentUser : 로그인 사용자
      * @return : List<DiaryVO> myDiaries
      */
@@ -52,6 +54,7 @@ public class DiaryController {
 
     /**
      * 특정 사용자의 공개로 게시된 일기 조회
+     *
      * @param memberId : 특정 사용자의 memberId
      * @return : 특정 사용자의 일기 목록
      */
@@ -63,12 +66,13 @@ public class DiaryController {
 
     /**
      * 로그인 사용자의 일기를 특정 날짜를 기준으로 조회
-     * @param currentUser : 로그인 사용자
+     *
+     * @param currentUser  : 로그인 사용자
      * @param selectedDate : 선택된 날짜 (yyyy-MM-dd 형식의 문자열)
      * @return
      */
     @GetMapping("/myDiaries/date/{selectedDate}")
-    public ResponseEntity<List<DiaryVO>> showMyDiaryByDate(@CurrentUser CustomUserDetails currentUser ,@PathVariable("selectedDate") String selectedDate) {
+    public ResponseEntity<List<DiaryVO>> showMyDiaryByDate(@CurrentUser CustomUserDetails currentUser, @PathVariable("selectedDate") String selectedDate) {
         Long memberId = currentUser.getId();
 
         // List null 체크를 하지않고 클라이언트로 전달 -> 클라이언트에서 null에 대한 처리 수행
@@ -78,6 +82,7 @@ public class DiaryController {
     /**
      * 전체 사용자의 공개로 게시된 일기 조회
      * 좋아요 순 오름차순 -> 조회 수 오름차순
+     *
      * @return
      */
     @GetMapping("/public")
@@ -88,6 +93,7 @@ public class DiaryController {
 
     /**
      * 일기 선택 시 해당 일기 조회
+     *
      * @param diaryId : 일기 고유 id
      * @return : 선택된 일기
      */
@@ -99,6 +105,7 @@ public class DiaryController {
 
     /**
      * 일기 저장
+     *
      * @param diary : 클라이언트에서 diaryVO와 필드명이 일치하는 Json 데이터 수신
      * @return : 저장 완료
      */
@@ -112,14 +119,16 @@ public class DiaryController {
             diaryService.saveDiary(diary);
             return ResponseEntity.ok(new ApiResponse(true, "저장되었습니다."));
         } catch (Exception e) {
-            e.printStackTrace(); // 서버 로그에 에러 출력
+            log.info(e.getMessage()); // 서버 로그에 에러 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "일기 저장 중 오류 발생"));
         }
     }
+
     /**
      * 일기 수정
+     *
      * @param diaryId : 일기 고유 id
-     * @param diary : 수정된 일기 내용
+     * @param diary   : 수정된 일기 내용
      * @return : 수정 완료
      */
     @PutMapping("/update/{diaryId}")
@@ -133,6 +142,23 @@ public class DiaryController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/updatePublic/{diaryId}")
+    public ResponseEntity<?> updateDiaryPublic(@PathVariable("diaryId") Long diaryId, @RequestParam Boolean isPublic) {
+        try {
+            diaryService.updateDiaryPublic(diaryId, isPublic);
+            return ResponseEntity.ok(new ApiResponse(true, !isPublic + "에서 " + isPublic + "으로 변경되었습니다."));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, e.getMessage()));
+        }
+    }
+
+    /**
+     * 일기 삭제
+     *
+     * @param diaryId : 선택된 일기 고유 id
+     * @return
+     */
     @DeleteMapping("/delete/{diaryId}")
     public ResponseEntity<?> deleteDiary(@PathVariable("diaryId") Long diaryId) {
         try {

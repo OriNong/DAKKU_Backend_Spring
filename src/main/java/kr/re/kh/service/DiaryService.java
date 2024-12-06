@@ -1,5 +1,6 @@
 package kr.re.kh.service;
 
+import kr.re.kh.exception.BadRequestException;
 import kr.re.kh.mapper.DiaryMapper;
 import kr.re.kh.model.vo.DiaryVO;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,7 @@ public class DiaryService {
         try {
             diaryMapper.saveDiary(diary); // DB 저장
         } catch (Exception e) {
-            throw new RuntimeException("일기 저장 실패", e); // 예외 처리
+            throw new BadRequestException("일기 저장 실패", e); // 예외 처리
         }
     }
 
@@ -59,7 +60,26 @@ public class DiaryService {
 
     // 일기 수정
     public void updateDiary(DiaryVO diary) {
-        diaryMapper.updateDiary(diary);
+        try {
+            diaryMapper.updateDiary(diary);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new BadRequestException("선택된 일기 조회 실패");
+        }
+
+    }
+
+    // 일기의 공개 / 비공개 상태 변경
+    public void updateDiaryPublic(Long diaryId, Boolean isPublic) {
+        Map<String, Object> diaryIdWithPublic = new HashMap<>();
+        diaryIdWithPublic.put("diaryId", diaryId);
+        diaryIdWithPublic.put("isPublic", isPublic);
+        try{
+            diaryMapper.updateDiaryPublic(diaryIdWithPublic);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new BadRequestException("일기 공개 범위 수정 중 오류 발생");
+        }
     }
 
     // 일기 삭제
