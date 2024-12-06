@@ -79,25 +79,28 @@
     <!-- User의 친구 목록 조회 -->
     <select id="getFriendshipList" parameterType="Long" resultType="HashMap">
         SELECT
-        u.USERNAME AS FRIEND_NAME
-        , u.USER_ID AS FRIEND_ID
-        , f.ID
-        , COALESCE(ROOM.ROOM_ID, null) AS ROOM_ID
+            u.USERNAME AS FRIEND_NAME
+            , u.USER_ID AS FRIEND_ID
+            , f.ID
+            , f.USER_ID
+            , u2.USERNAME
+            , COALESCE(ROOM.ROOM_ID, null) AS ROOM_ID
         FROM FRIEND_SHIP f
-        JOIN USERS u ON f.FRIEND_ID = u.USER_ID
-        LEFT OUTER JOIN (
-        SELECT
-        C.ROOM_ID
-        , C.USER_ID
-        , C.FRIEND_ID
-        FROM CHATROOMTABLE C
-        WHERE C.USER_ID = #{userID} OR C.FRIEND_ID = #{userID}
-        GROUP BY C.ROOM_ID, C.USER_ID, C.FRIEND_ID
-        ) ROOM ON
-        (
-        (ROOM.USER_ID = f.USER_ID AND ROOM.FRIEND_ID = f.FRIEND_ID)
-        OR (ROOM.USER_ID = f.FRIEND_ID AND ROOM.FRIEND_ID = f.USER_ID)
-        )
+            JOIN USERS u ON f.FRIEND_ID = u.USER_ID
+            LEFT OUTER JOIN USERS u2 ON f.USER_ID = u2.USER_ID
+            LEFT OUTER JOIN (
+                SELECT
+                    C.ROOM_ID
+                    , C.USER_ID
+                    , C.FRIEND_ID
+                FROM CHATROOMTABLE C
+                    WHERE C.USER_ID = #{userID} OR C.FRIEND_ID = #{userID}
+                GROUP BY C.ROOM_ID, C.USER_ID, C.FRIEND_ID
+            ) ROOM ON
+            (
+                (ROOM.USER_ID = f.USER_ID AND ROOM.FRIEND_ID = f.FRIEND_ID)
+                OR (ROOM.USER_ID = f.FRIEND_ID AND ROOM.FRIEND_ID = f.USER_ID)
+            )
         WHERE f.USER_ID = #{userID}
         AND f.STATUS = 'ACCEPT'
     </select>

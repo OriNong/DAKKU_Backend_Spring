@@ -117,10 +117,16 @@ public class ChatService {
         for (HashMap<String, Object> item : friendship) {
             HashMap<String, Object> temp = new HashMap<>();
             String friendName = item.get("FRIEND_NAME") == null ? null : (String) item.get("FRIEND_NAME");
+            String roomId = item.get("ROOM_ID") == null ? null : (String) item.get("ROOM_ID");
+            String userName = item.get("USERNAME") == null ? null : (String) item.get("USERNAME");
+            BigDecimal userID = item.get("USER_ID") == null ? null : (BigDecimal) item.get("USER_ID");
             BigDecimal friendId = item.get("FRIEND_ID") == null ? null : (BigDecimal) item.get("FRIEND_ID");
 
             temp.put("friendName", friendName);
+            temp.put("roomId", roomId);
             temp.put("friendId", friendId);
+            temp.put("userName", userName);
+            temp.put("userID", userID);
             friendshipResult.add(temp);
         }
         return friendshipResult;
