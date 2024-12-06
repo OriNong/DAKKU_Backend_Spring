@@ -28,6 +28,12 @@ public class ChatController {
     private final ChatService chatService;
     private final SseService sseService;
 
+    /**
+     * 유저가 특정 roomId로 들어가면 서버와 연결, 그후 채팅을 날릴시 채팅을 전송.
+     *
+     * @param chatMessageRequest
+     * @return
+     */
     @MessageMapping("/chat/rooms/{roomId}/send")
     @SendTo("/topic/public/rooms/{roomId}")
     public ResponseEntity<?> sendMessage(@Payload ChatMessageRequest chatMessageRequest) {
@@ -47,7 +53,7 @@ public class ChatController {
         chatService.saveMsg(chatMessageCreateCommand);
 
         // 현 프로젝트 틀.
-        HashMap<String, Object> result= new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>();
         result.put("text", chatMessageRequest.getText());
         result.put("title", chatMessageRequest.getFriendName());
         result.put("roomId", chatMessageRequest.getRoomId());
@@ -55,17 +61,16 @@ public class ChatController {
         result.put("friendID", chatMessageRequest.getFriendID());
         result.put("userID", chatMessageRequest.getUserID());
 
-        // layout 예제 전용 틀.
-//        ChatMessageRequest chatMessage = ChatMessageRequest.builder()
-//                .text(chatMessageRequest.getText())
-//                .userID(chatMessageRequest.getUserID())
-//                .roomId(chatMessageRequest.getRoomId())
-//                .friendID(chatMessageRequest.getFriendID())
-//                .build();
-
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * 유저의 채팅방을 불러온다. 없으면 새로 만들기
+     *
+     * @param currentUser
+     * @param friendID
+     * @return
+     */
     @GetMapping("/chat/uuid")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     public ResponseEntity<?> generateUUID(
@@ -82,4 +87,11 @@ public class ChatController {
     ) {
         return ResponseEntity.ok(chatService.userRoomCount(currentUser.getId()));
     }
+
+    @GetMapping("/chat/friendList")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    public ResponseEntity<?> chatFriendList(@CurrentUser CustomUserDetails customUser) {
+        return ResponseEntity.ok(chatService.getFriendList(customUser.getId()));
+    }
+
 }

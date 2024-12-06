@@ -1,25 +1,33 @@
 package kr.re.kh.service;
 
 import kr.re.kh.mapper.ChatMapper;
+import kr.re.kh.mapper.FriendshipMapper;
 import kr.re.kh.model.CustomUserDetails;
 import kr.re.kh.model.payload.request.ChatMessageCreateCommand;
 import kr.re.kh.model.vo.ChatListVO;
 import kr.re.kh.model.vo.MessageVO;
 import kr.re.kh.model.vo.RoomVO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ChatService {
+    private final ChatMapper chatMapper;
+    private final FriendshipMapper friendshipMapper;
 
-    @Autowired
-    private ChatMapper chatMapper;
-
+    /**
+     * 유저가 채팅을 입력하면 해당 채팅을 db로 저장.
+     * @param chatMessageCreateCommand
+     * @return
+     */
     public HashMap<String, Object> saveMsg(ChatMessageCreateCommand chatMessageCreateCommand) {
         HashMap<String, Object> result = new HashMap<>();
 
@@ -47,6 +55,12 @@ public class ChatService {
         return result;
     }
 
+    /**
+     * 유저의 채팅방이 없으면 생성, 있으면 기존 채팅방을 불러와서 반환
+     * @param currentUser
+     * @param friendID
+     * @return
+     */
     public HashMap<String, Object> checkRoom(CustomUserDetails currentUser, Long friendID) {
         HashMap<String, Object> result = new HashMap<>();
         HashMap<String, Object> requestMap = new HashMap<>();
@@ -78,12 +92,38 @@ public class ChatService {
         return result;
     }
 
+    /**
+     * 유저의 채팅방 목록 불러오기
+     * @param userID
+     * @return
+     */
     public List<ChatListVO> userRoomCount(Long userID) {
         return chatMapper.userRoomCount(userID);
     }
 
+    /**
+     * 채팅 메세지 목록 불러오기
+     * @param chatMessageCreateCommand
+     * @return
+     */
     public List<MessageVO> msgList(ChatMessageCreateCommand chatMessageCreateCommand) {
         return chatMapper.messageSearch(chatMessageCreateCommand.getRoomID());
+    }
+
+    public List<HashMap<String, Object>> getFriendList(Long userId) {
+        List<HashMap<String, Object>> friendship = friendshipMapper.getFriendshipList(userId);
+
+        List<HashMap<String, Object>> friendshipResult = new ArrayList<>();
+        for (HashMap<String, Object> item : friendship) {
+            HashMap<String, Object> temp = new HashMap<>();
+            String friendName = item.get("FRIEND_NAME") == null ? null : (String) item.get("FRIEND_NAME");
+            BigDecimal friendId = item.get("FRIEND_ID") == null ? null : (BigDecimal) item.get("FRIEND_ID");
+
+            temp.put("friendName", friendName);
+            temp.put("friendId", friendId);
+            friendshipResult.add(temp);
+        }
+        return friendshipResult;
     }
 
 }
