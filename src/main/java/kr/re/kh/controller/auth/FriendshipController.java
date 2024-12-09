@@ -63,6 +63,18 @@ public class FriendshipController {
         return friendshipService.getWaitingFriendList(receivedId);
     }
 
+//    /**
+//     * 받은 친구요청 조회
+//     *
+//     * @param currentUser : 현재 로그인 사용자
+//     * @return
+//     */
+//    @GetMapping("/user/friends/requested")
+//    public ResponseEntity<?> getFriendRequestSend(@CurrentUser CustomUserDetails currentUser) {
+//        Long receivedId = currentUser.getId();
+//        return friendshipService.getMySendedFriendRequest(receivedId);
+//    }
+
     /**
      * 받은 친구 요청 수락
      *

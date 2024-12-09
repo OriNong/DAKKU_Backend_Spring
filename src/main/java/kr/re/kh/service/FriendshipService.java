@@ -100,7 +100,6 @@ public class FriendshipService {
         Optional<User> loginUser = userRepository.findById(receivedId);
         if (loginUser.isPresent()) {
             List<FriendshipVO> friendShipList = friendshipMapper.findFriendshipListByUserId(loginUser.get().getId());
-            if (!friendShipList.isEmpty()) {
                 // 조회된 결과를 담을 VO 리스트
                 List<WaitingFriendListResponse> waitingFriendListResponse = new ArrayList<>();
                 for (FriendshipVO fs : friendShipList) {
@@ -118,8 +117,8 @@ public class FriendshipService {
                         }
                     }
                 }
+                log.info(waitingFriendListResponse.toString());
                 return new ResponseEntity<>(waitingFriendListResponse, HttpStatus.OK);
-            }else throw new BadRequestException("수락 대기 중인 친구 요청이 없습니다");
         } else throw new BadRequestException("회원 조회 실패");
     }
 
