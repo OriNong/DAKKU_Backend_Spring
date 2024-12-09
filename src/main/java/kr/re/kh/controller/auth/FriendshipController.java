@@ -29,6 +29,7 @@ public class FriendshipController {
 
     /**
      * 친구 요청 전송
+     *
      * @param currentUser : 현재 로그인 한 사용자
      */
     @PostMapping("/user/friendRequest/{id}")
@@ -52,6 +53,7 @@ public class FriendshipController {
 
     /**
      * 받은 친구요청 조회
+     *
      * @param currentUser : 현재 로그인 사용자
      * @return
      */
@@ -63,37 +65,41 @@ public class FriendshipController {
 
     /**
      * 받은 친구 요청 수락
+     *
      * @param friendshipId : 자신이 수신한 친구 요청 관계 friendshipVO의 고유 id
      * @return :
      */
     @PostMapping("/user/friends/received/accept/{friendshipId}")
-    public ResponseEntity<?> acceptFriendshipRequest(@PathVariable("friendshipId") Long friendshipId){
-    return friendshipService.acceptFriendshipRequest(friendshipId);
+    public ResponseEntity<?> acceptFriendshipRequest(@PathVariable("friendshipId") Long friendshipId) {
+        return friendshipService.acceptFriendshipRequest(friendshipId);
     }
 
     /**
      * 받은 친구 요청 거절
+     *
      * @param friendshipId : 자신이 수신한 친구 요청 관계 friendshipVO의 고유 id
      * @return :
      */
     @PostMapping("/user/friends/received/reject/{friendshipId}")
-    public ResponseEntity<?> rejectFriendshipRequest(@PathVariable("friendshipId") Long friendshipId){
+    public ResponseEntity<?> rejectFriendshipRequest(@PathVariable("friendshipId") Long friendshipId) {
         return friendshipService.rejectFriendshipRequest(friendshipId);
     }
 
     /**
      * 친구 목록 조회
+     *
      * @param userID
      * @return
      */
     @GetMapping("/friendSearch")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
-    public ResponseEntity<?> getFriendshipList(@RequestParam("userID") Long userID){
+    public ResponseEntity<?> getFriendshipList(@RequestParam("userID") Long userID) {
         return ResponseEntity.ok(friendshipService.getFriendshipList(userID));
     }
 
     /**
      * 나 자신의 프로필 검색
+     *
      * @return
      */
     @GetMapping("/meProFiles")
@@ -104,6 +110,7 @@ public class FriendshipController {
 
     /**
      * 사용자 정보를 수정.
+     *
      * @param userInfoApplyVO
      * @return
      */
@@ -115,6 +122,7 @@ public class FriendshipController {
 
     /**
      * 유저 삭제
+     *
      * @param customUser
      * @return
      */

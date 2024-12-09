@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface DiaryMapper {
@@ -20,6 +21,9 @@ public interface DiaryMapper {
     // 공개로 게시된 일기 조회
     List<DiaryVO> selectAllPublicDiary();
 
+    // 일기 고유 id로 일기 조회
+    Optional<DiaryVO> selectDiaryById(Long diaryId);
+
     // 일기 저장
     void saveDiary(DiaryVO diary);
 
@@ -28,6 +32,9 @@ public interface DiaryMapper {
 
     // 일기 수정
     void updateDiary(DiaryVO diary);
+
+    // 일기의 공개 / 비공개 상태 수정
+    void updateDiaryPublic(Map<String, Object> diaryIdWithPublic);
 
     // 일기 삭제
     void deleteDiaryById(Long diaryId);

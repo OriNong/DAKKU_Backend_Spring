@@ -26,7 +26,7 @@ public interface FriendshipMapper {
     void changeFriendshipStatus(FriendshipVO friendShip);
 
     // 친구 Accept 목록
-    List<FriendshipVO> getFriendshipList(Long userId);
+    List<HashMap<String, Object>> getFriendshipList(Long userId);
 
     // 나 자신과 친구를 조회
     HashMap<String, Object> meProfiles(Long userId);

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -180,7 +181,7 @@ public class FriendshipService {
      * @param userId
      * @return
      */
-    public List<FriendshipVO> getFriendshipList(Long userId){
+    public List<HashMap<String, Object>> getFriendshipList(Long userId) {
         return friendshipMapper.getFriendshipList(userId);
     }
 
@@ -191,8 +192,21 @@ public class FriendshipService {
      */
     public HashMap<String, Object> getMeProFiles(Long userId) {
         HashMap<String, Object> result = friendshipMapper.meProfiles(userId);
-        List<FriendshipVO> friendship = getFriendshipList(userId);
-        result.put("friendShipList", friendship);
+        List<HashMap<String, Object>> friendship = getFriendshipList(userId);
+
+        List<HashMap<String, Object>> friendshipResult = new ArrayList<>();
+        for (HashMap<String, Object> item : friendship) {
+            HashMap<String, Object> temp = new HashMap<>();
+            String friendName = item.get("FRIEND_NAME") == null ? null : (String) item.get("FRIEND_NAME");
+            BigDecimal friendId = item.get("FRIEND_ID") == null ? null : (BigDecimal) item.get("FRIEND_ID");
+            BigDecimal numId = item.get("ID") == null ? null : (BigDecimal) item.get("ID");
+
+            temp.put("friendName", friendName);
+            temp.put("friendId", friendId);
+            temp.put("id", numId);
+            friendshipResult.add(temp);
+        }
+        result.put("friendShipList", friendshipResult);
         return result;
     }
 

@@ -52,8 +52,8 @@
             diaryCrtDate,
             diaryUpdDate
         FROM diarys
-        WHERE memberId = {#memberId}
-        And TO_CHAR(diaryCrtDate, 'YYYY-MM-DD') = {#selectedDate}
+        WHERE memberId = #{memberId}
+        And TO_CHAR(diaryCrtDate, 'YYYY-MM-DD') = #{selectedDate}
     </select>
 
     <!-- 공개로 게시된 일기 조회 -->
@@ -73,6 +73,23 @@
         FROM diarys
         WHERE isPublic = 1
         ORDER BY diaryLikes DESC, diaryViews DESC
+    </select>
+
+    <!-- 일기 고유 id로 일기 조회 -->
+    <select id="selectDiaryById" parameterType="Long" resultType="DiaryVO">
+        select
+            diaryId,
+            memberId,
+            diaryTitle,
+            diaryContent,
+            isPublic,
+            diaryViews,
+            diaryLikes,
+            weather_icon,
+            diaryCrtDate,
+            diaryUpdDate
+        from diarys
+        where diaryId = #{diaryId}
     </select>
     
     <!-- 일기 저장 -->
@@ -116,6 +133,14 @@
         SET
             diaryTitle = #{diaryTitle},
             diaryContent = #{diaryContent},
+            isPublic = #{isPublic}
+        WHERE diaryId = #{diaryId}
+    </update>
+
+    <!-- 일기의 공개 / 비공개 상태 수정 -->
+    <update id="updateDiaryPublic" parameterType="map">
+        UPDATE diarys
+        SET
             isPublic = #{isPublic}
         WHERE diaryId = #{diaryId}
     </update>

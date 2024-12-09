@@ -5,26 +5,26 @@
     <!-- 친구 관계 저장 -->
     <insert id="saveFriendship" parameterType="FriendshipVO">
         MERGE INTO FRIEND_SHIP F
-            USING DUAL
-            ON (F.USER_ID = #{userId} AND F.FRIEND_ID = #{friendId})
-            WHEN MATCHED THEN
-                UPDATE SET
-                    F.STATUS = #{status},
-                    F.IS_FROM = #{isFrom}
-            WHEN NOT MATCHED THEN
-                INSERT (
-                        USER_ID,
-                        FRIEND_ID,
-                        STATUS,
-                        IS_FROM
-                    ) VALUES (
-                                 #{userId},
-                                 #{friendId},
-                                 #{status},
-                                 #{isFrom}
-                             )
+        USING DUAL
+        ON (F.USER_ID = #{userId} AND F.FRIEND_ID = #{friendId})
+        WHEN MATCHED THEN
+        UPDATE SET
+        F.STATUS = #{status},
+        F.IS_FROM = #{isFrom}
+        WHEN NOT MATCHED THEN
+        INSERT (
+        USER_ID,
+        FRIEND_ID,
+        STATUS,
+        IS_FROM
+        ) VALUES (
+        #{userId},
+        #{friendId},
+        #{status},
+        #{isFrom}
+        )
     </insert>
-    
+
     <!-- 친구 관계 저장 후 생성된 친구 관계의 고유 id 조회 -->
     <select id="selectFriendshipID" resultType="Long">
         SELECT ID
@@ -36,22 +36,22 @@
     <update id="setRequestedIds">
         UPDATE FRIEND_SHIP
         SET REQUESTED_ID =
-                CASE
-                    WHEN ID = #{fromId} THEN #{toId}
-                    WHEN ID = #{toId} THEN #{fromId}
-                    END
+        CASE
+        WHEN ID = #{fromId} THEN #{toId}
+        WHEN ID = #{toId} THEN #{fromId}
+        END
         WHERE ID IN (#{fromId}, #{toId})
     </update>
 
     <!-- User의 친구 관계 목록 조회 -->
     <select id="findFriendshipListByUserId" parameterType="Long" resultType="FriendshipVO">
         SELECT
-            ID as id,
-            USER_ID as userId,
-            FRIEND_ID as friendId,
-            STATUS as status,
-            IS_FROM as isFrom,
-            REQUESTED_ID as requestedId
+        ID as id,
+        USER_ID as userId,
+        FRIEND_ID as friendId,
+        STATUS as status,
+        IS_FROM as isFrom,
+        REQUESTED_ID as requestedId
         FROM FRIEND_SHIP
         WHERE USER_ID = #{userId}
     </select>
@@ -59,12 +59,12 @@
     <!-- 수락 대기 중인 친구 관계 목록 조회 -->
     <select id="findFriendshipById" parameterType="long" resultType="FriendshipVO">
         SELECT
-            ID as id,
-            USER_ID as userId,
-            FRIEND_ID as friendId,
-            STATUS as status,
-            IS_FROM as isFrom,
-            REQUESTED_ID as requestedId
+        ID as id,
+        USER_ID as userId,
+        FRIEND_ID as friendId,
+        STATUS as status,
+        IS_FROM as isFrom,
+        REQUESTED_ID as requestedId
         FROM FRIEND_SHIP
         WHERE ID = #{friendshipId}
     </select>
@@ -72,7 +72,7 @@
     <!-- 친구 요청 수락 및 거절 시 상태 변경 -->
     <update id="changeFriendshipStatus" parameterType="FriendshipVO">
         UPDATE FRIEND_SHIP
-            SET STATUS = #{status}
+        SET STATUS = #{status}
         WHERE USER_ID = #{userId} AND FRIEND_ID = #{friendId}
     </update>
 
@@ -82,11 +82,40 @@
             u.USERNAME AS FRIEND_NAME
             , u.USER_ID AS FRIEND_ID
             , f.ID
+            , f.USER_ID
+            , u2.USERNAME
+            , COALESCE(ROOM.ROOM_ID, null) AS ROOM_ID
         FROM FRIEND_SHIP f
             JOIN USERS u ON f.FRIEND_ID = u.USER_ID
-            WHERE f.USER_ID = #{userID}
+            LEFT OUTER JOIN USERS u2 ON f.USER_ID = u2.USER_ID
+            LEFT OUTER JOIN (
+                SELECT
+                    C.ROOM_ID
+                    , C.USER_ID
+                    , C.FRIEND_ID
+                FROM CHATROOMTABLE C
+                    WHERE C.USER_ID = #{userID} OR C.FRIEND_ID = #{userID}
+                GROUP BY C.ROOM_ID, C.USER_ID, C.FRIEND_ID
+            ) ROOM ON
+            (
+                (ROOM.USER_ID = f.USER_ID AND ROOM.FRIEND_ID = f.FRIEND_ID)
+                OR (ROOM.USER_ID = f.FRIEND_ID AND ROOM.FRIEND_ID = f.USER_ID)
+            )
+        WHERE f.USER_ID = #{userID}
         AND f.STATUS = 'ACCEPT'
     </select>
+
+    <!-- User의 친구 목록 조회 -->
+<!--    <select id="getFriendshipList" parameterType="Long" resultType="HashMap">-->
+<!--        SELECT-->
+<!--        u.USERNAME AS FRIEND_NAME-->
+<!--        , u.USER_ID AS FRIEND_ID-->
+<!--        , f.ID-->
+<!--        FROM FRIEND_SHIP f-->
+<!--        JOIN USERS u ON f.FRIEND_ID = u.USER_ID-->
+<!--        WHERE f.USER_ID = #{userID}-->
+<!--        AND f.STATUS = 'ACCEPT'-->
+<!--    </select>-->
 
     <select id="meProfiles" parameterType="Long" resultType="HashMap">
         SELECT
