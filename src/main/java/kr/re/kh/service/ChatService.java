@@ -46,6 +46,7 @@ public class ChatService {
                 .friendID(chatMessageCreateCommand.getFriendId())
                 .message(chatMessageCreateCommand.getContent())
                 .build();
+        log.info(messageSave.toString());
         chatMapper.saveMsg(messageSave);
 
         result.put("uuid", chatMessageCreateCommand.getRoomID());
@@ -77,9 +78,9 @@ public class ChatService {
                     .friendID(friendID) // friend_id 대화하고자하는 상대방의 id를 기입
                     .build();
             chatMapper.createRoom(roomVO);
-            result.put("uuid", uuid);
+            result.put("roomId", uuid);
         } else {
-            result.put("uuid", resultUUID);
+            result.put("roomId", resultUUID);
             ChatMessageCreateCommand chatMessageCreateCommand = ChatMessageCreateCommand.builder()
                     .roomID(resultUUID)
                     .build();

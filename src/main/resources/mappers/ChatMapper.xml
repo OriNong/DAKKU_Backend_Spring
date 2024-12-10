@@ -15,7 +15,8 @@
     </select>
 
     <select id="checkUUID" parameterType="HashMap" resultType="String">
-        SELECT ROOM_ID
+        SELECT
+            ROOM_ID
         FROM CHATROOMTABLE
         WHERE LEAST(user_id, friend_id) = LEAST(#{userID}, #{friendID})
         AND GREATEST(user_id, friend_id) = GREATEST(#{userID}, #{friendID})
