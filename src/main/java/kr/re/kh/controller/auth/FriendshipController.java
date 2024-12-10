@@ -29,8 +29,9 @@ public class FriendshipController {
 
     /**
      * 친구 요청 전송
-     *
-     * @param currentUser : 현재 로그인 한 사용자
+     * @param currentUser : 현재 로그인 사용자
+     * @param receiverId : 친구 요청 수신 대상 사용자 id == {id}
+     * @return
      */
     @PostMapping("/user/friendRequest/{id}")
     public ResponseEntity<?> sendFriendshipRequest(
@@ -100,7 +101,7 @@ public class FriendshipController {
     /**
      * 친구 목록 조회
      *
-     * @param userID
+     * @param userID : 친구 목록 조회할
      * @return
      */
     @GetMapping("/friendSearch")
