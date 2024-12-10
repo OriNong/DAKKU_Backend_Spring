@@ -1,14 +1,12 @@
 package kr.re.kh.controller.auth;
 
 import kr.re.kh.model.payload.response.ApiResponse;
+import kr.re.kh.model.vo.ChatVO;
 import kr.re.kh.service.SseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
@@ -29,9 +27,17 @@ public class SseController {
         return sseEmitter;
     }
 
+    /**
+     * Post로 보내기 위한 Controller
+     * @param msg
+     * @param userID
+     * @return
+     */
     @GetMapping("/sendMessage")
-    public ResponseEntity<?> sendMessage(@RequestParam(value = "msg") String msg, @RequestParam("userID") Long userID) {
-        sseService.sendToUI(msg, userID);
+    public ResponseEntity<?> sendMessage(
+            @RequestParam(value = "msg") String msg, @RequestParam("userID") Long userID
+    ) {
+        sseService.sendPostToUI(msg, userID);
 
         return ResponseEntity.ok(new ApiResponse(true, "전송"));
     }

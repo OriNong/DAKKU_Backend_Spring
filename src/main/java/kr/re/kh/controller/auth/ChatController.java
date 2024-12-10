@@ -49,7 +49,6 @@ public class ChatController {
             return ResponseEntity.ok("사용자 본인의 룸을 만들수 없습니다.");
         }
 
-        sseService.sendToUI("채팅 알림", chatMessageRequest.getUserID()); // Sse를 이용해서 사용자에게 채팅 알림이 왔다고 전달.
         chatService.saveMsg(chatMessageCreateCommand);
 
         // 현 프로젝트 틀.
@@ -61,6 +60,7 @@ public class ChatController {
         result.put("friendID", chatMessageRequest.getFriendID());
         result.put("userID", chatMessageRequest.getUserID());
 
+        sseService.sendToUI(chatMessageRequest.getText(), chatMessageRequest.getFriendID(), chatMessageRequest.getRoomId()); // Sse를 이용해서 사용자에게 채팅 알림이 왔다고 전달.
         return ResponseEntity.ok(result);
     }
 

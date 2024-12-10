@@ -34,7 +34,34 @@ public class SseService {
         emitters.remove(sseEmitter);
     }
 
-    public void sendToUI(String message, Long userID) {
+    /**
+     * 채팅에서 보내는 알림 Service
+     * @param message
+     * @param userID
+     * @param roomId
+     */
+    public void sendToUI(String message, Long userID, String roomId) {
+        log.info("서버에서 보내는 메시지 : " + message);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("message", message);
+        result.put("userID", userID);
+        result.put("roomId", roomId);
+
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(SseEmitter.event().reconnectTime(500).data(result));
+            } catch (Exception e) {
+                emitter.complete();
+            }
+        }
+    }
+
+    /**
+     * 전송 테스트를 위한 Service
+     * @param message
+     * @param userID
+     */
+    public void sendPostToUI(String message, Long userID) {
         log.info("서버에서 보내는 메시지 : " + message);
         HashMap<String, Object> result = new HashMap<>();
         result.put("message", message);
@@ -43,22 +70,10 @@ public class SseService {
         for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event().reconnectTime(500).data(result));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 emitter.complete();
             }
         }
     }
 
-    /**
-     * 사용자에게 여러번 알림을 오는걸 방지하고자 데이터베이스에서 값을 확인후 컬럼에 0,1을 확인후 알림 전송
-     * @param userID
-     * @param msg
-     */
-    public void userMark(Long userID, String msg) {
-        boolean userChk = Long.valueOf(1).equals(sseMapper.userCheck(userID));
-        if (!userChk) {
-            sendToUI(msg, userID);
-            sseMapper.userUpdate(userID);
-        }
-    }
 }
