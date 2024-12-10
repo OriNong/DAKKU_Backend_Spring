@@ -13,6 +13,7 @@ public interface ChatMapper {
 
     void createRoom(RoomVO roomVO);
     void saveMsg(MessageVO messageVO);
+    void createAlarmCount(HashMap<String, Object> roomId);
     List<MessageVO> messageSearch(String roomID);
     String checkUUID(HashMap<String, Object> map);
     List<ChatListVO> userRoomCount(Long userID);

@@ -50,4 +50,8 @@
         ORDER BY A.CREATE_DATE ASC
     </select>
 
+    <insert id="createAlarmCount" parameterType="HashMap">
+        INSERT INTO ALARMCOUNT (ROOM_ID, USER_ID) VALUES (#{ROOM_ID}, #{USER_ID})
+    </insert>
+
 </mapper>
