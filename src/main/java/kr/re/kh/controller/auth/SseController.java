@@ -1,7 +1,6 @@
 package kr.re.kh.controller.auth;
 
 import kr.re.kh.model.payload.response.ApiResponse;
-import kr.re.kh.model.vo.ChatVO;
 import kr.re.kh.service.SseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
