@@ -77,12 +77,6 @@ public class ChatService {
                     .friendID(friendID) // friend_id 대화하고자하는 상대방의 id를 기입
                     .build();
             chatMapper.createRoom(roomVO);
-
-            HashMap<String, Object> alarmCount = new HashMap<>();
-            alarmCount.put("ROOM_ID", roomVO.getRoomId());
-            alarmCount.put("USER_ID", roomVO.getUserID());
-            chatMapper.createAlarmCount(alarmCount);
-
             result.put("roomId", uuid);
         } else {
             result.put("roomId", resultUUID);
