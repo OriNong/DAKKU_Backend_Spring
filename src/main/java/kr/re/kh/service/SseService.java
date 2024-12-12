@@ -38,7 +38,6 @@ public class SseService {
      * 채팅에서 보내는 알림 Service
      * @param message
      * @param userID
-     * @param roomId
      */
     public void sendToUI(String message, Long userID, String roomId) {
         log.info("서버에서 보내는 메시지 : " + message);
@@ -57,7 +56,7 @@ public class SseService {
     }
 
     /**
-     * 전송 테스트를 위한 Service
+     * 채팅에서 보내는 알림 Service
      * @param message
      * @param userID
      */

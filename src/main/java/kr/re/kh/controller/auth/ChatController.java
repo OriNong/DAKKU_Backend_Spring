@@ -26,6 +26,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final SseService sseService;
 
     /**
      * 유저가 특정 roomId로 들어가면 서버와 연결, 그후 채팅을 날릴시 채팅을 전송.
@@ -58,6 +59,8 @@ public class ChatController {
         result.put("userName", chatMessageRequest.getUserName());
         result.put("friendID", chatMessageRequest.getFriendID());
         result.put("userID", chatMessageRequest.getUserID());
+
+        sseService.sendToUI(chatMessageRequest.getText(), chatMessageRequest.getFriendID(), chatMessageRequest.getRoomId());
 
         return ResponseEntity.ok(result);
     }

@@ -45,7 +45,6 @@ public class ChatService {
                 .friendID(chatMessageCreateCommand.getFriendId())
                 .message(chatMessageCreateCommand.getContent())
                 .build();
-        log.info(messageSave.toString());
         chatMapper.saveMsg(messageSave);
 
         result.put("uuid", chatMessageCreateCommand.getRoomID());
